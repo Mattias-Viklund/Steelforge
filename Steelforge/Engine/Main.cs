@@ -87,7 +87,6 @@ namespace Steelforge.Engine
                     ticks++;
                     lag -= timePerUpdate;
                     currentState.FixedUpdate(deltaTime);
-                    inputManager.NewFrame();
 
                 }
 
@@ -135,9 +134,13 @@ namespace Steelforge.Engine
         {
             screen.GetWindow().Closed += new EventHandler(Close);
             screen.GetWindow().KeyPressed += new EventHandler<KeyEventArgs>(KeyDown);
+            screen.GetWindow().KeyReleased += new EventHandler<KeyEventArgs>(KeyUp);
             screen.GetWindow().MouseButtonPressed += new EventHandler<MouseButtonEventArgs>(MouseDown);
+            screen.GetWindow().MouseButtonReleased += new EventHandler<MouseButtonEventArgs>(MouseUp);
             screen.GetWindow().MouseMoved += new EventHandler<MouseMoveEventArgs>(MouseMoved);
             screen.GetWindow().MouseWheelMoved += new EventHandler<MouseWheelEventArgs>(MouseScrolled);
+            screen.GetWindow().SetKeyRepeatEnabled(false);
+
 
         }
 
@@ -158,9 +161,19 @@ namespace Steelforge.Engine
             inputManager.MouseDown(e);
         }
 
+        private void MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            inputManager.MouseUp(e);
+        }
+
         private void KeyDown(object sender, KeyEventArgs e)
         {
             inputManager.KeyDown(e);
+        }
+
+        private void KeyUp(object sender, KeyEventArgs e)
+        {
+            inputManager.KeyUp(e);
         }
 
         public void Close(object sender, EventArgs e)

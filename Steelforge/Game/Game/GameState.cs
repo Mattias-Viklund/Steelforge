@@ -75,10 +75,10 @@ namespace Steelforge.Game
         {
             if (InputManager.PRESSED_KEYS != 0)
             {
-                Console.WriteLine("HELD Keys: " + InputManager.HELD_KEYS);
+                Console.WriteLine("Pressed Keys: " + InputManager.PRESSED_KEYS);
 
             }
-            if ((InputManager.HELD_KEYS & GlobalConstants.KEYBOARD_SPACE) == GlobalConstants.KEYBOARD_SPACE)
+            if ((InputManager.PRESSED_KEYS & GlobalConstants.KEYBOARD_SPACE) == GlobalConstants.KEYBOARD_SPACE)
                 draw = false;
             else
                 draw = true;
