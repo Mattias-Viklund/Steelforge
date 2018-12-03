@@ -36,6 +36,8 @@ namespace Steelforge.Engine.Core
         public const int KEYBOARD_X = (1 << 0x18);
         public const int KEYBOARD_Y = (1 << 0x19);
         public const int KEYBOARD_Z = (1 << 0x9A);
+        public const int KEYBOARD_ENTER = (1 << 0x9B);
+        public const int KEYBOARD_ESCAPE = (1 << 0x9C);
         // KEYBORD CONSTANTS
         // 0x00 - 0x9A
 

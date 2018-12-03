@@ -13,7 +13,7 @@ namespace Steelforge.Engine.Core
         {
         }
 
-        public override void Init(Screen screen)
+        public override void Init(RenderWindow window)
         {
         }
 

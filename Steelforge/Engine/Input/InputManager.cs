@@ -69,6 +69,9 @@ namespace Steelforge.Engine.Input
                 case Keyboard.Key.Y: PRESSED_KEYS |= GlobalConstants.KEYBOARD_Y; break;
                 case Keyboard.Key.Z: PRESSED_KEYS |= GlobalConstants.KEYBOARD_Z; break;
 
+                case Keyboard.Key.Return: PRESSED_KEYS |= GlobalConstants.KEYBOARD_ENTER; break;
+                case Keyboard.Key.Escape: PRESSED_KEYS |= GlobalConstants.KEYBOARD_ESCAPE; break;
+
             }
         }
 
@@ -76,10 +79,10 @@ namespace Steelforge.Engine.Input
         {
             switch (e.Code)
             {
-                case Keyboard.Key.D: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_D; break;
                 case Keyboard.Key.W: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_W; break;
                 case Keyboard.Key.A: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_A; break;
                 case Keyboard.Key.S: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_S; break;
+                case Keyboard.Key.D: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_D; break;
 
                 case Keyboard.Key.Space: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_SPACE; break;
 
@@ -105,6 +108,9 @@ namespace Steelforge.Engine.Input
                 case Keyboard.Key.X: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_X; break;
                 case Keyboard.Key.Y: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_Y; break;
                 case Keyboard.Key.Z: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_Z; break;
+
+                case Keyboard.Key.Return: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_ENTER; break;
+                case Keyboard.Key.Escape: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_ESCAPE; break;
 
             }
         }

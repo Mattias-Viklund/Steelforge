@@ -42,17 +42,17 @@ namespace Steelforge.Engine.Core
         }
 
         // Init
-        public abstract void Init(Screen screen);
+        public abstract void Init(RenderWindow window);
 
         // Core
         public abstract void Update(Time time);
 
         // Does the StateBase want control over the RenderWindow?
         // Let them have it
-        protected virtual void Update(Time time, Screen screen) { }
-        public void ExtendedUpdate(Time time, Screen screen)
+        protected virtual void Update(Time time, RenderWindow window) { }
+        public void ExtendedUpdate(Time time, RenderWindow window)
         {
-            Update(time, screen);
+            Update(time, window);
             this.needsExtendedUpdate = false;
 
         }

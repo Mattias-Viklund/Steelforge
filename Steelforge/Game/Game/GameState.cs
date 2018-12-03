@@ -5,6 +5,7 @@ using Steelforge.Engine;
 using Steelforge.Engine.Core;
 using Steelforge.Engine.Input;
 using Steelforge.Engine.Rendering;
+using Steelforge.Engine.TileSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,11 @@ namespace Steelforge.Game
         private DrawQueue queue;
         private static DrawQueue staticQueue = new DrawQueue(0);
 
+        // Keep track of the screen
         private Vector2u size;
         private Vector2u center;
 
-        private bool draw = true;
+        // private TileSet tileSet;
 
         public GameState(int drawLimit)
         {
@@ -34,23 +36,12 @@ namespace Steelforge.Game
         {
         }
 
-        public override void Init(Screen screen)
+        public override void Init(RenderWindow window)
         {
-            this.size = screen.GetWindow().Size;
+            this.size = window.Size;
             this.center = new Vector2u(size.X / 2, size.Y / 2);
 
-            Vertex[] triangle = new Vertex[3];
-
-            triangle[0] = new Vertex(new Vector2f(0, -300) + (Vector2f)center, Color.Red);
-            triangle[1] = new Vertex(new Vector2f(300, 300) + (Vector2f)center, Color.Green);
-            triangle[2] = new Vertex(new Vector2f(-300, 300) + (Vector2f)center, Color.Blue);
-
-            VertexArray array = new VertexArray(PrimitiveType.Triangles, 3);
-            array.Append(triangle[0]);
-            array.Append(triangle[1]);
-            array.Append(triangle[2]);
-
-            queue.QueueItem(array);
+            //tileSet = new TileSet((int)size.X, (int)size.Y, 25);
 
         }
 
@@ -64,10 +55,7 @@ namespace Steelforge.Game
 
         public override void Render(ref DrawQueue queueOut)
         {
-            if (draw)
-                queueOut = queue;
-            else
-                queueOut = staticQueue;
+            queueOut = queue;
 
         }
 
@@ -78,11 +66,21 @@ namespace Steelforge.Game
                 Console.WriteLine("Pressed Keys: " + InputManager.PRESSED_KEYS);
 
             }
-            if ((InputManager.PRESSED_KEYS & GlobalConstants.KEYBOARD_SPACE) == GlobalConstants.KEYBOARD_SPACE)
-                draw = false;
-            else
-                draw = true;
 
+            if ((InputManager.PRESSED_KEYS & GlobalConstants.KEYBOARD_ESCAPE) == GlobalConstants.KEYBOARD_ESCAPE)
+            {
+                RequestExtendedUpdate();
+
+            }
+        }
+
+        protected override void Update(Time time, RenderWindow window)
+        {
+            if ((InputManager.PRESSED_KEYS & GlobalConstants.KEYBOARD_ESCAPE) == GlobalConstants.KEYBOARD_ESCAPE)
+            {
+                window.Close();
+
+            }
         }
     }
 }

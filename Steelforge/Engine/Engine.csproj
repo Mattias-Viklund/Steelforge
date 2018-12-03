@@ -92,12 +92,17 @@
     <Compile Include="Core\GlobalConstants.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Misc\DebugUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\DrawQueue.cs" />
-    <Compile Include="Screen.cs" />
     <Compile Include="Core\StateBase.cs" />
     <Compile Include="TileSystem\Tile.cs" />
     <Compile Include="TileSystem\TileSet.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Arial.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
