@@ -1,11 +1,11 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using Steelforge.Engine;
-using Steelforge.Engine.Core;
-using Steelforge.Engine.Input;
-using Steelforge.Engine.Rendering;
-using Steelforge.Engine.TileSystem;
+using Steelforge;
+using Steelforge.Core;
+using Steelforge.Input;
+using Steelforge.Rendering;
+using Steelforge.TileSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace Steelforge.Game
         private Vector2u size;
         private Vector2u center;
 
-        // private TileSet tileSet;
+        private TileSet tileSet;
 
         public GameState(int drawLimit)
         {
@@ -34,6 +34,9 @@ namespace Steelforge.Game
 
         public override void FixedUpdate(Time time)
         {
+            queue.Clear();
+            queue.QueueItem(tileSet);
+
         }
 
         public override void Init(RenderWindow window)
@@ -41,7 +44,19 @@ namespace Steelforge.Game
             this.size = window.Size;
             this.center = new Vector2u(size.X / 2, size.Y / 2);
 
-            //tileSet = new TileSet((int)size.X, (int)size.Y, 25);
+            // (int)size.X, (int)size.Y, 25
+            tileSet = new TileSet();
+            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 0, 20 + 70 * 0), 50));
+            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 1, 20 + 70 * 0), 50));
+            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 2, 20 + 70 * 0), 50));
+
+            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 0, 20 + 70 * 1), 50));
+            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 1, 20 + 70 * 1), 50));
+            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 2, 20 + 70 * 1), 50));
+
+            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 0, 20 + 70 * 2), 50));
+            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 1, 20 + 70 * 2), 50));
+            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 2, 20 + 70 * 2), 50));
 
         }
 
@@ -70,6 +85,30 @@ namespace Steelforge.Game
             if ((InputManager.PRESSED_KEYS & GlobalConstants.KEYBOARD_ESCAPE) == GlobalConstants.KEYBOARD_ESCAPE)
             {
                 RequestExtendedUpdate();
+
+            }
+
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_W))
+            {
+                tileSet.AddOffset(new Vector2f(0, -4));
+
+            }
+
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_A))
+            {
+                tileSet.AddOffset(new Vector2f(-4, 0));
+
+            }
+
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_S))
+            {
+                tileSet.AddOffset(new Vector2f(0, 4));
+
+            }
+
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_D))
+            {
+                tileSet.AddOffset(new Vector2f(4, 0));
 
             }
         }

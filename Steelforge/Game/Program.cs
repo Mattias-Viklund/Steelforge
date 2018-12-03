@@ -1,31 +1,33 @@
 ﻿using System;
 using SFML.Graphics;
-using Steelforge.Engine.Rendering;
-using Steelforge.Engine;
+using Steelforge.Rendering;
+using Steelforge;
 using SFML.Window;
+using System.Collections.Generic;
 
 namespace Steelforge.Game
 {
     class Program
     {
-        public static Main engine;
+        public static Engine engine;
         public static GameState gameState;
 
-        static void Main(string[] args)
+        unsafe static void Main(string[] args)
         {
             Console.Title = "";
             Console.WriteLine("Starting Steelforge");
 
-            engine = new Main(new RenderWindow(new VideoMode(1280, 720), "Engine"));
-            gameState = new GameState(256);
+            //engine = new Engine(new RenderWindow(new VideoMode(1280, 720), "Engine"));
+            //gameState = new GameState(256);
 
-            engine.PushState(gameState);
-            engine.SetClearColor(new Color(30, 30, 30));
-            engine.Debug(true);
+            //engine.PushState(gameState);
+            //engine.SetClearColor(Color.Black);
+            //engine.Debug(false);
 
-            engine.Start();
+            //engine.Start();
 
-            Console.WriteLine("Finished Executing.");
+            Console.WriteLine("Finished Execution.");
+            Console.ReadLine();
 
         }
     }

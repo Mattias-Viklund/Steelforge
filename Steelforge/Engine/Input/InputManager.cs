@@ -1,12 +1,12 @@
 ﻿using SFML.Window;
-using Steelforge.Engine.Core;
+using Steelforge.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Steelforge.Engine.Input
+namespace Steelforge.Input
 {
     public class InputManager
     {
@@ -113,6 +113,15 @@ namespace Steelforge.Engine.Input
                 case Keyboard.Key.Escape: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_ESCAPE; break;
 
             }
+        }
+
+        public static bool KeyPressed(int key)
+        {
+            if ((PRESSED_KEYS & key) == key)
+                return true;
+
+            return false;
+
         }
     }
 }

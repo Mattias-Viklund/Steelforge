@@ -2,9 +2,9 @@
 using SFML.Window;
 
 using SFML.Graphics;
-using Steelforge.Engine.Rendering;
+using Steelforge.Rendering;
 
-namespace Steelforge.Engine.Core
+namespace Steelforge.Core
 {
     public abstract class StateBase
     {

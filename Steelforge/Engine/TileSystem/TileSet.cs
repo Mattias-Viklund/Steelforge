@@ -2,62 +2,61 @@
 using SFML.System;
 using System.Collections.Generic;
 
-namespace Steelforge.Engine.TileSystem
+namespace Steelforge.TileSystem
 {
     public class TileSet : Drawable
     {
         private List<Tile> tiles = new List<Tile>();
-        private float drawWidth;
-        private float drawHeight;
+        private Color tileColor = Color.White;
 
-        private int offsetX;
-        private int offsetY;
+        private Vector2f offset = new Vector2f();
 
-        private int drawableTilesX;
-        private int drawableTilesY;
+        //private float drawWidth;
+        //private float drawHeight;
 
-        private float aspectRatio;
+        //private int offsetX;
+        //private int offsetY;
 
-        private Vector2i selectedTile = new Vector2i(0, 0);
+        //private int drawableTilesX;
+        //private int drawableTilesY;
 
-        public TileSet(int screenWidth, int screenHeight, int tileHeight, int tiles = 1024)
-        {
-            this.drawHeight = tileHeight;
+        //private float aspectRatio;
 
-            offsetX = tiles / 2;
-            offsetY = offsetX;
-
-            aspectRatio = (float)screenWidth / (float)screenHeight;
-            this.drawWidth = drawHeight * aspectRatio;
-
-            float drawX = screenWidth / drawWidth + 1;
-            float drawY = screenHeight / drawHeight + 1;
-
-            drawableTilesX = (int)drawX;
-            drawableTilesY = (int)drawY;
-
-        }
-
-        private bool CheckTile(int tile)
-        {
-            return false;
+        // int screenWidth, int screenHeight, int tileHeight, int tiles = 1024
+        public TileSet()
+        {      
+            // this.drawHeight = tileHeight;
+               
+            // offsetX = tiles / 2;
+            // offsetY = offsetX;
+               
+            // aspectRatio = (float)screenWidth / (float)screenHeight;
+            // this.drawWidth = drawHeight * aspectRatio;
+               
+            // float drawX = screenWidth / drawWidth + 1;
+            // float drawY = screenHeight / drawHeight + 1;
+               
+            // drawableTilesX = (int)drawX;
+            // drawableTilesY = (int)drawY;
 
         }
 
-        public void ChangeTile(int tile, Color color)
+        public void AddTile(Tile t)
         {
+            tiles.Add(t);
 
         }
 
-        public void AddOffset(int x, int y)
-        {
-            offsetX += x;
-            offsetY += y;
+        //public void AddOffset(int x, int y)
+        //{
+        //    offsetX += x;
+        //    offsetY += y;
 
-        }
+        //}
 
-        public void HighlightTile(int tile)
+        public void AddOffset(Vector2f offset)
         {
+            this.offset += offset;
 
         }
 
@@ -65,7 +64,11 @@ namespace Steelforge.Engine.TileSystem
         {
             if (target is RenderWindow)
             {
-                
+                foreach (Tile tile in tiles)
+                {
+                    Rendering.Draw.DrawTile((target as RenderWindow), tile, tileColor, offset);
+
+                }
             }
         }
     }

@@ -3,17 +3,21 @@
 using SFML.Graphics;
 using SFML.Window;
 using SFML.System;
-using Steelforge.Engine.Core;
-using Steelforge.Engine.Rendering;
-using Steelforge.Engine.Input;
-using Steelforge.Engine.Misc;
+using Steelforge.Core;
+using Steelforge.Rendering;
+using Steelforge.Input;
+using Steelforge.Misc;
 
-namespace Steelforge.Engine
+namespace Steelforge
 {
-    public class Main
+    public class Engine
     {
         // Are we debugging?
         public static bool _debug = false;
+        public static Font engineFont = new Font("Arial.ttf");
+
+        public static InputManager inputManager = new InputManager();
+        public static Interpolator interpolator = new Interpolator();
 
         private Color clearColor = Color.Black;
 
@@ -25,11 +29,10 @@ namespace Steelforge.Engine
         private StateBase newState = currentState;
 
         private RenderWindow window;
-        public static InputManager inputManager = new InputManager();
         private DrawQueue drawQueue = new DrawQueue(9999);
-        private DebugUtils debugUtils = new DebugUtils("Arial.ttf");
+        private DebugUtils debugUtils = new DebugUtils(engineFont);
 
-        public Main(RenderWindow window)
+        public Engine(RenderWindow window)
         {
             this.window = window;
             Setup();
@@ -60,7 +63,6 @@ namespace Steelforge.Engine
             Time timePerUpdate = Time.FromSeconds(1.0f / (float)TPS);
             uint ticks = 0;
 
-            long frames = 0;
             Clock timer = new Clock();
 
             // Timing variables
@@ -88,8 +90,9 @@ namespace Steelforge.Engine
 
                 // Dispatch window events
                 window.DispatchEvents();
-                currentState.FixedUpdate(deltaTime);
-                frames++;
+
+                // TODO: Add comment that makes sense
+                FixedUpdate(deltaTime);
 
                 if (currentState.WantsExtendedUpdate())
                     currentState.ExtendedUpdate(deltaTime, window);
@@ -99,24 +102,18 @@ namespace Steelforge.Engine
                 {
                     ticks++;
                     lag -= timePerUpdate;
-                    currentState.Update(deltaTime);
-                    frames++;
+                    Update(deltaTime);
 
                 }
 
                 // Hand over control of the drawQueue to the current state.
                 currentState.Render(ref drawQueue);
 
-                //if (_debug)
-                //{
-                //    debugUtils.UpdateFPS(frames, deltaTime);
-                //    drawQueue.QueueItem(debugUtils);
-
-                //}
-
                 // Clear the window and prepare for next draw;
-                // screen.GetWindow().Clear(clearColor);
                 // Thinking I should probably try to not clear the screen each draw, and instead draw over it.
+                window.Clear(clearColor);
+
+                DrawDebugTools(deltaTime);
 
                 // Draw our framebuffer
                 window.Draw(drawQueue);
@@ -125,6 +122,29 @@ namespace Steelforge.Engine
                 window.Display();
 
             }
+        }
+
+        private void DrawDebugTools(Time time)
+        {
+            if (_debug)
+            {
+                debugUtils.UpdateFPS(time);
+                window.Draw(debugUtils);
+
+            }
+        }
+
+        private void FixedUpdate(Time time)
+        {
+            currentState.FixedUpdate(time);
+
+        }
+
+        private void Update(Time time)
+        {
+            interpolator.StepAll(time.AsMilliseconds());
+            currentState.Update(time);
+
         }
 
         public void PushState(StateBase state)

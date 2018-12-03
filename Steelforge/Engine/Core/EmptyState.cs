@@ -1,9 +1,9 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using Steelforge.Engine.Rendering;
+using Steelforge.Rendering;
 
-namespace Steelforge.Engine.Core
+namespace Steelforge.Core
 {
     public class EmptyState : StateBase
     {

@@ -1,6 +1,6 @@
 ﻿using SFML.Graphics;
 
-namespace Steelforge.Engine.Rendering
+namespace Steelforge.Rendering
 {
     public class DrawQueue : Drawable
     {

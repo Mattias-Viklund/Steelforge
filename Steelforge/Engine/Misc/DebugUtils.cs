@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Steelforge.Engine.Misc
+namespace Steelforge.Misc
 {
     class DebugUtils : Drawable
     {
@@ -14,11 +14,14 @@ namespace Steelforge.Engine.Misc
 
         private Font font;
         private Text fpsCounter;
+        private StringBuilder builder = new StringBuilder();
 
-        public DebugUtils(string fontPath)
+        public DebugUtils(Font font)
         {
-            this.font = new Font(fontPath);
-            this.fpsCounter = new Text("FPS: ", font, 24);
+            this.font = font;
+
+            this.builder.Append("FPS: 0");
+            this.fpsCounter = new Text(builder.ToString(), font, 24);
             this.fpsCounter.Position = new Vector2f(20, 20);
 
             this.drawables.Add(fpsCounter);
@@ -39,11 +42,15 @@ namespace Steelforge.Engine.Misc
 
         }
 
-        public void UpdateFPS(long frames, Time time)
+        public void UpdateFPS(Time time)
         {
             if (time.AsMilliseconds() != 0)
-                this.fpsCounter.DisplayedString = "FPS: " + (1000000l / (time.AsMicroseconds()));
+            {
+                builder.Clear();
+                builder.Append("FPS: " + (1000000L / time.AsMicroseconds()));
+                this.fpsCounter.DisplayedString = builder.ToString();
 
+            }
         }
 
         public void Draw(RenderTarget target, RenderStates states)

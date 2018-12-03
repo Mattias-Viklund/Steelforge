@@ -1,31 +1,17 @@
 ﻿using SFML.Graphics;
-namespace Steelforge.Engine.TileSystem
+using SFML.System;
+
+namespace Steelforge.TileSystem
 {
-    public class Tile : Drawable
+    public struct Tile
     {
-        public Color color;
+        public Vector2f position;
+        public int size;
 
-        public Tile()
+        public Tile(Vector2f position, int size)
         {
-            color = Color.White;
-
-        }
-
-        public Tile(Color color)
-        {
-            this.color = color;
-
-        }
-
-        public void Draw(RenderTarget target, RenderStates states)
-        {
-
-            
-        }
-
-        public void SetColor(Color color)
-        {
-            
+            this.position = position;
+            this.size = size;
 
         }
     }
