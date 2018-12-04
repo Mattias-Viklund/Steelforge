@@ -124,6 +124,12 @@ namespace Steelforge
             }
         }
 
+        public RenderWindow GetWindow()
+        {
+            return window;
+
+        }
+
         private void DrawDebugTools(Time time)
         {
             if (_debug)
@@ -142,7 +148,8 @@ namespace Steelforge
 
         private void Update(Time time)
         {
-            interpolator.StepAll(time.AsMilliseconds());
+            if (interpolator.GetInterps() != 0)
+                interpolator.StepAll(time.AsMilliseconds());
             currentState.Update(time);
 
         }

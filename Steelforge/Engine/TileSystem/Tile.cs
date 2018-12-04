@@ -1,9 +1,10 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using Steelforge.Objects;
 
 namespace Steelforge.TileSystem
 {
-    public struct Tile
+    public class Tile
     {
         public Vector2f position;
         public int size;
@@ -12,6 +13,12 @@ namespace Steelforge.TileSystem
         {
             this.position = position;
             this.size = size;
+
+        }
+
+        public Vector2f GetPosition()
+        {
+            return position;
 
         }
     }

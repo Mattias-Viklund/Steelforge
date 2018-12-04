@@ -16,7 +16,7 @@ namespace Steelforge.Rendering
             RectangleShape rectangle = new RectangleShape();
 
             rectangle.Size = new Vector2f(tile.size, tile.size);
-            rectangle.Position = tile.position + offset;
+            rectangle.Position = tile.GetPosition() + offset;
             rectangle.FillColor = color;
 
             window.Draw(rectangle);

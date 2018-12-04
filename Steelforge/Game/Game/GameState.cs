@@ -88,29 +88,37 @@ namespace Steelforge.Game
 
             }
 
+            Vector2f movement = new Vector2f();
+
             if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_W))
             {
-                tileSet.AddOffset(new Vector2f(0, -4));
+                movement += new Vector2f(0, 20);
 
             }
 
             if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_A))
             {
-                tileSet.AddOffset(new Vector2f(-4, 0));
+                movement += new Vector2f(-20, 0);
 
             }
 
             if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_S))
             {
-                tileSet.AddOffset(new Vector2f(0, 4));
+                movement += new Vector2f(0, 20);
 
             }
 
             if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_D))
             {
-                tileSet.AddOffset(new Vector2f(4, 0));
+                movement += new Vector2f(20, 0);
 
             }
+
+            if (movement.X != 0 || movement.Y != 0)
+                tileSet.LerpPosition(movement, 5000);
+
+            tileSet.Update();
+
         }
 
         protected override void Update(Time time, RenderWindow window)

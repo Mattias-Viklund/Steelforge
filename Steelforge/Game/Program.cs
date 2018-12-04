@@ -12,22 +12,23 @@ namespace Steelforge.Game
         public static Engine engine;
         public static GameState gameState;
 
-        unsafe static void Main(string[] args)
+        static void Main(string[] args)
         {
             Console.Title = "";
             Console.WriteLine("Starting Steelforge");
 
-            //engine = new Engine(new RenderWindow(new VideoMode(1280, 720), "Engine"));
-            //gameState = new GameState(256);
+            engine = new Engine(new RenderWindow(new VideoMode(1280, 720), "engine"));
+            gameState = new GameState(256);
 
-            //engine.PushState(gameState);
-            //engine.SetClearColor(Color.Black);
-            //engine.Debug(false);
+            engine.PushState(gameState);
+            engine.SetClearColor(Color.Black);
+            engine.Debug(true); 
 
-            //engine.Start();
+            engine.GetWindow().RequestFocus();
+
+            engine.Start();
 
             Console.WriteLine("Finished Execution.");
-            Console.ReadLine();
 
         }
     }

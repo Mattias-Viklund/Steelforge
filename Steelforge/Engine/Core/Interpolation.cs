@@ -14,24 +14,21 @@ namespace Steelforge.Core
 
         }
 
-        public static void Lerp(float start, float end, int milliseconds)
+        public static int Lerp(float start, float end, int milliseconds)
         {
-            Engine.interpolator.AddInterpolator(new Interp(Interp.InterpolationType.Lerp, start, end, milliseconds));
+            Interp interpolation = new Interp(start, end, milliseconds);
+            int ID = interpolation.GetID();
+            Engine.interpolator.AddInterpolator(interpolation);
+
+            return ID;
 
         }
     }
 
-    public struct Interp
+    public class Interp
     {
-        public enum InterpolationType
-        {
-            Lerp,
-            Slerp,
-            Nlerp
+        private static Random randomNumberGenerator = new Random();
 
-        }
-
-        private InterpolationType interpType;
         private int millisecondsRemaining;
 
         private float differencePerMS;
@@ -39,16 +36,20 @@ namespace Steelforge.Core
 
         private int ID;
 
-        public Interp(InterpolationType interpType, float start, float end, int durationMilliseconds)
+        public Interp(float start, float end, int durationMilliseconds)
         {
             millisecondsRemaining = durationMilliseconds;
-            this.interpType = interpType;
             this.value = start;
 
             if (start - end != 0)
                 differencePerMS = durationMilliseconds / (start - end);
             else
+            {
                 differencePerMS = 0;
+                millisecondsRemaining = 0;
+
+            }
+            this.ID = randomNumberGenerator.Next();
 
         }
 
@@ -70,6 +71,24 @@ namespace Steelforge.Core
                 return true;
 
             return false;
+
+        }
+
+        public int GetID()
+        {
+            return this.ID;
+
+        }
+
+        public float GetValue()
+        {
+            return value;
+
+        }
+
+        public bool IsDone()
+        {
+            return (millisecondsRemaining <= 0);
 
         }
     }
