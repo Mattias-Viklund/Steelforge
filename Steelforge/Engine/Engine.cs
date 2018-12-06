@@ -17,7 +17,6 @@ namespace Steelforge
         public static Font engineFont = new Font("Arial.ttf");
 
         public static InputManager inputManager = new InputManager();
-        public static Interpolator interpolator = new Interpolator();
 
         private Color clearColor = Color.Black;
 
@@ -148,8 +147,6 @@ namespace Steelforge
 
         private void Update(Time time)
         {
-            if (interpolator.GetInterps() != 0)
-                interpolator.StepAll(time.AsMilliseconds());
             currentState.Update(time);
 
         }

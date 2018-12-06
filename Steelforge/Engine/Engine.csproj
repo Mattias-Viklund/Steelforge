@@ -95,8 +95,6 @@
   <ItemGroup>
     <Compile Include="Core\EmptyState.cs" />
     <Compile Include="Core\GlobalConstants.cs" />
-    <Compile Include="Core\Interpolation.cs" />
-    <Compile Include="Core\Interpolator.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Misc\DebugUtils.cs" />

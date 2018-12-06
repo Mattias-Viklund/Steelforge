@@ -113,12 +113,6 @@ namespace Steelforge.Game
                 movement += new Vector2f(20, 0);
 
             }
-
-            if (movement.X != 0 || movement.Y != 0)
-                tileSet.LerpPosition(movement, 5000);
-
-            tileSet.Update();
-
         }
 
         protected override void Update(Time time, RenderWindow window)

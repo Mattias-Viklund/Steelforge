@@ -14,8 +14,6 @@ namespace Steelforge.Objects
         private static int IDs = 0;
 
         protected Vector2f position;
-        private bool lerp = false;
-        private int[] lerps = new int[2];
         private int ID;
 
         public GameObject(bool macro=true)
@@ -41,52 +39,9 @@ namespace Steelforge.Objects
 
         }
 
-        public void Update()
+        public void UpdateObject()
         {
-            if (lerp)
-            {
-                Interp interp;
-                for (int i = 0; i < 2; i++)
-                {
-                    interp = Engine.interpolator.GetInterp(lerps[i]);
-                    if (interp == null)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        if (interp.IsDone())
-                        {
-                            lerp = false;
-                            break;
-
-                        }
-
-                        float value = interp.GetValue();
-                        Console.WriteLine("value: " + value);
-
-                        if (i == 0)
-                        {
-                            position.X += value;
-
-                        }
-                        else
-                        {
-                            position.Y += value;
-
-                        }
-                    }
-                }
-            }
-        }
-
-        public void LerpPosition(Vector2f end, int milliseconds)
-        {
-            // Lerp1
-            lerps[0] = Interpolation.Lerp(0, end.X, milliseconds);
-            lerps[1] = Interpolation.Lerp(0, end.Y, milliseconds);
-            lerp = true;
-
+            
         }
 
         public static void Destroy(int index)
