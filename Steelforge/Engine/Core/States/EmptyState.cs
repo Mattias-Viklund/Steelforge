@@ -3,7 +3,7 @@ using SFML.System;
 using SFML.Window;
 using Steelforge.Rendering;
 
-namespace Steelforge.Core
+namespace Steelforge.Core.States
 {
     public class EmptyState : StateBase
     {

@@ -7,6 +7,7 @@ using Steelforge.Core;
 using Steelforge.Rendering;
 using Steelforge.Input;
 using Steelforge.Misc;
+using Steelforge.Core.States;
 
 namespace Steelforge
 {
@@ -14,22 +15,30 @@ namespace Steelforge
     {
         // Are we debugging?
         public static bool _debug = false;
-        public static Font engineFont = new Font("Arial.ttf");
 
+        // Input manager
         public static InputManager inputManager = new InputManager();
-
-        private Color clearColor = Color.Black;
-
-        // Ticks Per Second
-        const uint TPS = 20;
+        private static Command command = Command.None;
 
         // Initialize the states
         private static StateBase currentState = StateBase._empty;
         private StateBase newState = currentState;
 
+        // Ticks Per Second
+        const uint TPS = 20;
+
+        // Default engine font
+        public static Font engineFont = new Font("Arial.ttf");
+
+        // Window stuff
         private RenderWindow window;
-        private DrawQueue drawQueue = new DrawQueue(9999);
+        private DrawQueue drawQueue = new DrawQueue(0);
         private DebugUtils debugUtils = new DebugUtils(engineFont);
+
+        private MouseMode mouseMode = MouseMode.Default;
+        private CustomCursor cursor = null;
+
+        private Color clearColor = Color.Black;
 
         public Engine(RenderWindow window)
         {
@@ -38,7 +47,41 @@ namespace Steelforge
 
         }
 
-        public void Debug(bool debug)
+        public void SetMouseMode(MouseMode mouseMode)
+        {
+            this.mouseMode = mouseMode;
+
+            // FPS MODE
+            switch (mouseMode)
+            {
+                case MouseMode.Default:
+                    window.SetMouseCursorVisible(true);
+                    break;
+
+                case MouseMode.FPS:
+                    window.SetMouseCursorVisible(false);
+                    break;
+
+                case MouseMode.CustomCursor:
+                    if (cursor == null)
+                    {
+                        mouseMode = MouseMode.Default;
+                        break;
+
+                    }
+                    window.SetMouseCursorVisible(true);
+                    break;
+
+            }
+        }
+
+        public void SetCustomCursor(Texture texture)
+        {
+            cursor = new CustomCursor((Vector2f)texture.Size, texture);
+
+        }
+
+        public void SetDebug(bool debug)
         {
             _debug = debug;
 
@@ -87,11 +130,10 @@ namespace Steelforge
                 lastTime = time;
                 lag += deltaTime;
 
+                CheckCommand();
+
                 // Dispatch window events
                 window.DispatchEvents();
-
-                // TODO: Add comment that makes sense
-                FixedUpdate(deltaTime);
 
                 if (currentState.WantsExtendedUpdate())
                     currentState.ExtendedUpdate(deltaTime, window);
@@ -108,11 +150,14 @@ namespace Steelforge
                 // Hand over control of the drawQueue to the current state.
                 currentState.Render(ref drawQueue);
 
+                // TODO: Add comment that makes sense
+                FixedUpdate(deltaTime);
+
                 // Clear the window and prepare for next draw;
                 // Thinking I should probably try to not clear the screen each draw, and instead draw over it.
                 window.Clear(clearColor);
 
-                DrawDebugTools(deltaTime);
+                LateUpdate(deltaTime);
 
                 // Draw our framebuffer
                 window.Draw(drawQueue);
@@ -141,12 +186,31 @@ namespace Steelforge
 
         private void FixedUpdate(Time time)
         {
+            Debug.Flush();
             currentState.FixedUpdate(time);
+
+        }
+
+        private void LateUpdate(Time time)
+        {
+            DrawDebugTools(time);
+
+            if (mouseMode == MouseMode.CustomCursor)
+            {
+                cursor.SetPosition((Vector2f)Mouse.GetPosition() - (Vector2f)window.Position);
+                window.Draw(cursor);
+
+            }
+
+            currentState.LateUpdate(time);
 
         }
 
         private void Update(Time time)
         {
+            if (mouseMode == MouseMode.FPS)
+                Mouse.SetPosition(window.Position + (Vector2i)(window.Size / 2));
+
             currentState.Update(time);
 
         }
@@ -166,6 +230,28 @@ namespace Steelforge
         {
             currentState = newState;
             currentState.Init(window);
+
+        }
+
+        private void CheckCommand()
+        {
+            if (command != Command.None)
+            {
+                switch (command)
+                {
+                    case Command.Close:
+                        Close(null, null);
+                        break;
+
+                }
+                command = Command.None;
+
+            }
+        }
+
+        public static void Push(Command command)
+        {
+            Engine.command = command;
 
         }
 
@@ -192,7 +278,7 @@ namespace Steelforge
 
         private void MouseMoved(object sender, MouseMoveEventArgs e)
         {
-            currentState.MouseMoved(sender, e);
+            inputManager.MouseMoved(sender, e);
 
         }
 

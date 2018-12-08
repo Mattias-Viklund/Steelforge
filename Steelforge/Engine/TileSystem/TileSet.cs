@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace Steelforge.TileSystem
 {
-    public class TileSet : GameObject, Drawable
+    public class TileSet : GameObject
     {
         private List<Tile> tiles = new List<Tile>();
         private Color tileColor = Color.White;
 
         public TileSet()
-        {      
+        {
 
         }
 
@@ -21,15 +21,12 @@ namespace Steelforge.TileSystem
 
         }
 
-        public void Draw(RenderTarget target, RenderStates states)
+        public override void Draw(RenderWindow target, RenderStates states)
         {
-            if (target is RenderWindow)
+            foreach (Tile tile in tiles)
             {
-                foreach (Tile tile in tiles)
-                {
-                    Rendering.Draw.DrawTile((target as RenderWindow), tile, tileColor, position);
+                //Rendering.Draw.DrawTile((target as RenderWindow), tile, tileColor, position);
 
-                }
             }
         }
 

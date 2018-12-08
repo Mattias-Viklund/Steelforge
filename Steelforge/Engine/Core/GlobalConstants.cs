@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SFML.System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,6 +39,8 @@ namespace Steelforge.Core
         public const int KEYBOARD_Z = (1 << 0x9A);
         public const int KEYBOARD_ENTER = (1 << 0x9B);
         public const int KEYBOARD_ESCAPE = (1 << 0x9C);
+        public const int KEYBOARD_SHIFT = (1 << 0x9D);
+        public const int KEYBOARD_CTRL = (1 << 0x9E);
         // KEYBORD CONSTANTS
         // 0x00 - 0x9A
 

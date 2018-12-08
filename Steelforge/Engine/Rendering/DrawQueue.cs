@@ -5,10 +5,9 @@ namespace Steelforge.Rendering
     public class DrawQueue : Drawable
     {
         private Drawable[] drawables;
-        private int queuedItems = 0;
         private int maxItems;
 
-        private int drawTo = 0;
+        private int items = 0;
 
         // Drawable is anything that can be drawn by a RenderWindow.
         // This creates a static array that can be filled with drawables.
@@ -22,7 +21,7 @@ namespace Steelforge.Rendering
         // When we clear we just reset the position to iterate from
         public void Clear()
         {
-            drawTo = 0;
+            items = 0;
 
         }
 
@@ -31,9 +30,9 @@ namespace Steelforge.Rendering
         {
             if (target is RenderWindow)
             {
-                for (int i = 0; i < drawTo; i++)
+                for (int i = 0; i < items; i++)
                 {
-                    if (drawTo == maxItems - 1)
+                    if (items == maxItems - 1)
                         break;
 
                     // Draw all items in the queue;
@@ -44,13 +43,13 @@ namespace Steelforge.Rendering
         }
 
         // Returns the success of the operation.
-        public bool QueueItem(Drawable d)
+        public bool Add(Drawable d)
         {
-            if (queuedItems == maxItems)
+            if (items == maxItems)
                 return false;
 
-            drawables[drawTo] = d;
-            drawTo++;
+            drawables[items] = d;
+            items++;
 
             return true;
 

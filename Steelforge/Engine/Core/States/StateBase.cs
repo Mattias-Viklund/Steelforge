@@ -3,8 +3,9 @@ using SFML.Window;
 
 using SFML.Graphics;
 using Steelforge.Rendering;
+using Steelforge.Misc;
 
-namespace Steelforge.Core
+namespace Steelforge.Core.States
 {
     public abstract class StateBase
     {
@@ -46,6 +47,7 @@ namespace Steelforge.Core
 
         // Core
         public abstract void Update(Time time);
+        public virtual void LateUpdate(Time time) { }
 
         // Does the StateBase want control over the RenderWindow?
         // Let them have it
@@ -62,8 +64,13 @@ namespace Steelforge.Core
         public virtual void SendLine(string s) { }
 
         // Input
-        public abstract void MouseMoved(object sender, MouseMoveEventArgs e);
-        public abstract void MouseScrolled(object sender, MouseWheelEventArgs e);
+        public virtual void MouseMoved(object sender, MouseMoveEventArgs e) { }
+        public virtual void MouseScrolled(object sender, MouseWheelEventArgs e) { }
 
+        protected void Close()
+        {
+            Engine.Push(Command.Close);
+
+        }
     }
 }

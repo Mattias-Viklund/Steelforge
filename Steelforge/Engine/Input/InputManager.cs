@@ -1,4 +1,5 @@
-﻿using SFML.Window;
+﻿using SFML.System;
+using SFML.Window;
 using Steelforge.Core;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,18 @@ namespace Steelforge.Input
     {
         public static int PRESSED_KEYS = 0x0;
         public static int PRESSED_MOUSEBUTTONS = 0x0;
+
+        public static Vector2f MOUSE_VELOCITY = new Vector2f();
+        public static Vector2f MOUSE_POSITION = new Vector2f();
+        private Vector2f oldPosition = new Vector2f();
+
+        public void MouseMoved(object sender, MouseMoveEventArgs e)
+        {
+            MOUSE_POSITION = (Vector2f)Mouse.GetPosition();
+            MOUSE_VELOCITY = MOUSE_POSITION - oldPosition;
+            oldPosition = MOUSE_POSITION;
+
+        }
 
         public void MouseDown(MouseButtonEventArgs e)
         {
@@ -71,6 +84,10 @@ namespace Steelforge.Input
 
                 case Keyboard.Key.Return: PRESSED_KEYS |= GlobalConstants.KEYBOARD_ENTER; break;
                 case Keyboard.Key.Escape: PRESSED_KEYS |= GlobalConstants.KEYBOARD_ESCAPE; break;
+                case Keyboard.Key.LShift: PRESSED_KEYS |= GlobalConstants.KEYBOARD_SHIFT; break;
+                case Keyboard.Key.RShift: PRESSED_KEYS |= GlobalConstants.KEYBOARD_SHIFT; break;
+                case Keyboard.Key.LControl: PRESSED_KEYS |= GlobalConstants.KEYBOARD_CTRL; break;
+                case Keyboard.Key.RControl: PRESSED_KEYS |= GlobalConstants.KEYBOARD_CTRL; break;
 
             }
         }
@@ -111,6 +128,10 @@ namespace Steelforge.Input
 
                 case Keyboard.Key.Return: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_ENTER; break;
                 case Keyboard.Key.Escape: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_ESCAPE; break;
+                case Keyboard.Key.LShift: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_SHIFT; break;
+                case Keyboard.Key.RShift: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_SHIFT; break;
+                case Keyboard.Key.LControl: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_CTRL; break;
+                case Keyboard.Key.RControl: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_CTRL; break;
 
             }
         }
@@ -118,6 +139,15 @@ namespace Steelforge.Input
         public static bool KeyPressed(int key)
         {
             if ((PRESSED_KEYS & key) == key)
+                return true;
+
+            return false;
+
+        }
+
+        public static bool MouseButtonPressed(int button)
+        {
+            if ((PRESSED_MOUSEBUTTONS & button) == button)
                 return true;
 
             return false;

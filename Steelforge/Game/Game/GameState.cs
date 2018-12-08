@@ -6,36 +6,30 @@ using Steelforge.Core;
 using Steelforge.Input;
 using Steelforge.Rendering;
 using Steelforge.TileSystem;
+using Steelforge.GUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Steelforge.Core.States;
+using Steelforge.Objects;
 
 namespace Steelforge.Game
 {
     class GameState : StateBase
     {
         private DrawQueue queue;
-        private static DrawQueue staticQueue = new DrawQueue(0);
 
         // Keep track of the screen
         private Vector2u size;
         private Vector2u center;
 
-        private TileSet tileSet;
+        private Button button;
 
         public GameState(int drawLimit)
         {
-            Console.WriteLine("popoo");
             queue = new DrawQueue(drawLimit);
-
-        }
-
-        public override void FixedUpdate(Time time)
-        {
-            queue.Clear();
-            queue.QueueItem(tileSet);
 
         }
 
@@ -43,34 +37,7 @@ namespace Steelforge.Game
         {
             this.size = window.Size;
             this.center = new Vector2u(size.X / 2, size.Y / 2);
-
-            // (int)size.X, (int)size.Y, 25
-            tileSet = new TileSet();
-            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 0, 20 + 70 * 0), 50));
-            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 1, 20 + 70 * 0), 50));
-            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 2, 20 + 70 * 0), 50));
-
-            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 0, 20 + 70 * 1), 50));
-            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 1, 20 + 70 * 1), 50));
-            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 2, 20 + 70 * 1), 50));
-
-            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 0, 20 + 70 * 2), 50));
-            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 1, 20 + 70 * 2), 50));
-            tileSet.AddTile(new Tile(new Vector2f(20 + 70 * 2, 20 + 70 * 2), 50));
-
-        }
-
-        public override void MouseMoved(object sender, MouseMoveEventArgs e)
-        {
-        }
-
-        public override void MouseScrolled(object sender, MouseWheelEventArgs e)
-        {
-        }
-
-        public override void Render(ref DrawQueue queueOut)
-        {
-            queueOut = queue;
+            this.button = new Button(new Vector2f(25, center.Y), "AIDS", 72);
 
         }
 
@@ -78,50 +45,39 @@ namespace Steelforge.Game
         {
             if (InputManager.PRESSED_KEYS != 0)
             {
-                Console.WriteLine("Pressed Keys: " + InputManager.PRESSED_KEYS);
+                Debug.Write("Pressed Keys: "+InputManager.PRESSED_KEYS);
 
             }
 
-            if ((InputManager.PRESSED_KEYS & GlobalConstants.KEYBOARD_ESCAPE) == GlobalConstants.KEYBOARD_ESCAPE)
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_ESCAPE))
             {
-                RequestExtendedUpdate();
+                base.Close();
 
             }
 
-            Vector2f movement = new Vector2f();
-
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_W))
+            if (InputManager.MouseButtonPressed(GlobalConstants.MOUSE_1))
             {
-                movement += new Vector2f(0, 20);
-
-            }
-
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_A))
-            {
-                movement += new Vector2f(-20, 0);
-
-            }
-
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_S))
-            {
-                movement += new Vector2f(0, 20);
-
-            }
-
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_D))
-            {
-                movement += new Vector2f(20, 0);
+                Debug.Write("M1 Pressed, MOUSE_VELOCITY: " + InputManager.MOUSE_VELOCITY);
+                GameObject.Create(new Placeholder(new RectangleShape(new Vector2f(20, 20)) { Position = InputManager.MOUSE_POSITION }));
 
             }
         }
 
-        protected override void Update(Time time, RenderWindow window)
+        public override void FixedUpdate(Time time)
         {
-            if ((InputManager.PRESSED_KEYS & GlobalConstants.KEYBOARD_ESCAPE) == GlobalConstants.KEYBOARD_ESCAPE)
+            queue.Clear();
+            queue.Add(button);
+            foreach (GameObject gObj in GameObject.gameObjects)
             {
-                window.Close();
+                queue.Add(gObj);
 
             }
+        }
+
+        public override void Render(ref DrawQueue queueOut)
+        {
+            queueOut = queue;
+
         }
     }
 }

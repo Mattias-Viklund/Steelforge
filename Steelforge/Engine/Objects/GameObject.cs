@@ -1,4 +1,5 @@
-﻿using SFML.System;
+﻿using SFML.Graphics;
+using SFML.System;
 using Steelforge.Core;
 using System;
 using System.Collections.Generic;
@@ -8,23 +9,29 @@ using System.Threading.Tasks;
 
 namespace Steelforge.Objects
 {
-    public class GameObject
+    public class GameObject : Drawable
     {
         public static List<GameObject> gameObjects = new List<GameObject>();
-        private static int IDs = 0;
 
         protected Vector2f position;
-        private int ID;
+        protected bool enabled = true;
 
-        public GameObject(bool macro=true)
+        private int index = -1;
+
+        public GameObject(bool macro = true)
         {
             if (macro)
             {
                 gameObjects.Add(this);
-                this.ID = IDs;
-                IDs++;
+                this.index = gameObjects.Count - 1;
 
             }
+        }
+
+        public int GetIndex()
+        {
+            return index;
+
         }
 
         public Vector2f GetPosition()
@@ -39,14 +46,58 @@ namespace Steelforge.Objects
 
         }
 
-        public void UpdateObject()
+        /// <summary>
+        /// Special need to update a specific object?
+        /// </summary>
+        public virtual void Update()
         {
-            
+
+
+        }
+
+        public static void Create(GameObject gameObject)
+        {
+            gameObjects.Add(gameObject);
+
+        }
+
+        public static GameObject GetByIndex(int index)
+        {
+            if (WithinBounds(index))
+                return gameObjects[index];
+
+            return null;
+
         }
 
         public static void Destroy(int index)
         {
-            gameObjects.RemoveAt(index);
+            if (WithinBounds(index))
+                gameObjects[index].enabled = false;
+
+        }
+
+        private static bool WithinBounds(int index)
+        {
+            if (index < 0 || index > gameObjects.Count - 1)
+                return false;
+
+            return true;
+
+        }
+        
+        public void Draw(RenderTarget target, RenderStates states)
+        {
+            if (target is RenderWindow)
+            {
+                Draw((target as RenderWindow), states);
+
+            }
+        }
+        
+        public virtual void Draw(RenderWindow window, RenderStates states)
+        {
+
 
         }
     }
