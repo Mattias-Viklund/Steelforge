@@ -28,11 +28,11 @@ namespace Steelforge
         const uint TPS = 20;
 
         // Default engine font
-        public static Font engineFont = new Font("Arial.ttf");
+        public static Font engineFont = new Font("lucon.ttf");
 
         // Window stuff
         private RenderWindow window;
-        private DrawQueue drawQueue = new DrawQueue(0);
+        private Rendering.Buffer drawBuffer = new Rendering.Buffer(0);
         private DebugUtils debugUtils = new DebugUtils(engineFont);
 
         private MouseMode mouseMode = MouseMode.Default;
@@ -47,6 +47,98 @@ namespace Steelforge
 
         }
 
+        public void Start()
+        {
+            Time timePerUpdate = Time.FromSeconds(1.0f / (float)TPS);
+            uint ticks = 0;
+
+            Clock timer = new Clock();
+
+            // Timing variables
+            Time lastTime = Time.Zero; // Set to time of last frame
+            Time lag = Time.Zero; // For FixedUpdate()
+            Time time = Time.Zero; // Time of current frame
+            Time deltaTime = Time.Zero; // Delta time of frame
+
+            // Initialize the current state at least once
+            currentState.Init(window);
+
+            while (window.IsOpen && currentState != null)
+            {
+                // We shouldn't handle draw queue clearing, the StateBase should.
+                // drawBuffer.Clear();
+
+                if (currentState.GetID() != newState.GetID())
+                    SwapState();
+
+                time = timer.ElapsedTime;
+                deltaTime = time - lastTime;
+
+                lastTime = time;
+                lag += deltaTime;
+
+                CheckCommand();
+
+                // Dispatch window events
+                window.DispatchEvents();
+
+                if (currentState.WantsExtendedUpdate())
+                    currentState.ExtendedUpdate(deltaTime, window);
+
+                //Fixed time update
+                while (lag >= timePerUpdate)
+                {
+                    ticks++;
+                    lag -= timePerUpdate;
+                    Update(deltaTime);
+
+                }
+
+                // Hand over control of the drawBuffer to the current state.
+                currentState.Render(ref drawBuffer);
+
+                // TODO: Add comment that makes sense
+                FixedUpdate(deltaTime);
+                window.Clear(clearColor);
+
+                LateUpdate(deltaTime);
+
+                // Draw our framebuffer
+                window.Draw(drawBuffer);
+
+                // Display the screen
+                window.Display();
+
+            }
+        }
+
+        // Push a State
+        public void PushState(StateBase state)
+        {
+            if (currentState.GetID() == StateBase._empty.GetID())
+            {
+                currentState = state;
+
+            }
+            this.newState = state;
+
+        }
+
+        // Allows for a state to push a command, even if it doesn't have control over this
+        public static void Push(Command command)
+        {
+            Engine.command = command;
+
+        }
+
+        public RenderWindow GetWindow()
+        {
+            return window;
+
+        }
+
+        // Methods For Setting
+        #region Set
         public void SetMouseMode(MouseMode mouseMode)
         {
             this.mouseMode = mouseMode;
@@ -69,7 +161,7 @@ namespace Steelforge
                         break;
 
                     }
-                    window.SetMouseCursorVisible(true);
+                    window.SetMouseCursorVisible(false);
                     break;
 
             }
@@ -100,80 +192,10 @@ namespace Steelforge
 
         }
 
-        public void Start()
-        {
-            Time timePerUpdate = Time.FromSeconds(1.0f / (float)TPS);
-            uint ticks = 0;
+        #endregion
 
-            Clock timer = new Clock();
-
-            // Timing variables
-            Time lastTime = Time.Zero; // Set to time of last frame
-            Time lag = Time.Zero; // For FixedUpdate()
-            Time time = Time.Zero; // Time of current frame
-            Time deltaTime = Time.Zero; // Delta time of frame
-
-            // Initialize the current state at least once
-            currentState.Init(window);
-
-            while (window.IsOpen && currentState != null)
-            {
-                // We shouldn't handle draw queue clearing, the StateBase should.
-                // drawQueue.Clear();
-
-                if (currentState.GetID() != newState.GetID())
-                    SwapState();
-
-                time = timer.ElapsedTime;
-                deltaTime = time - lastTime;
-
-                lastTime = time;
-                lag += deltaTime;
-
-                CheckCommand();
-
-                // Dispatch window events
-                window.DispatchEvents();
-
-                if (currentState.WantsExtendedUpdate())
-                    currentState.ExtendedUpdate(deltaTime, window);
-
-                //Fixed time update
-                while (lag >= timePerUpdate)
-                {
-                    ticks++;
-                    lag -= timePerUpdate;
-                    Update(deltaTime);
-
-                }
-
-                // Hand over control of the drawQueue to the current state.
-                currentState.Render(ref drawQueue);
-
-                // TODO: Add comment that makes sense
-                FixedUpdate(deltaTime);
-
-                // Clear the window and prepare for next draw;
-                // Thinking I should probably try to not clear the screen each draw, and instead draw over it.
-                window.Clear(clearColor);
-
-                LateUpdate(deltaTime);
-
-                // Draw our framebuffer
-                window.Draw(drawQueue);
-
-                // Display the screen
-                window.Display();
-
-            }
-        }
-
-        public RenderWindow GetWindow()
-        {
-            return window;
-
-        }
-
+        // Private Methods
+        #region Private
         private void DrawDebugTools(Time time)
         {
             if (_debug)
@@ -215,17 +237,6 @@ namespace Steelforge
 
         }
 
-        public void PushState(StateBase state)
-        {
-            if (currentState.GetID() == StateBase._empty.GetID())
-            {
-                currentState = state;
-
-            }
-            this.newState = state;
-
-        }
-
         private void SwapState()
         {
             currentState = newState;
@@ -248,12 +259,7 @@ namespace Steelforge
 
             }
         }
-
-        public static void Push(Command command)
-        {
-            Engine.command = command;
-
-        }
+        #endregion
 
         // Setup Events
         #region Setup

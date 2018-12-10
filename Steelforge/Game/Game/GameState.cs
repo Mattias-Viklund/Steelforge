@@ -19,17 +19,18 @@ namespace Steelforge.Game
 {
     class GameState : StateBase
     {
-        private DrawQueue queue;
+        private Rendering.Buffer queue;
 
         // Keep track of the screen
         private Vector2u size;
         private Vector2u center;
 
         private Button button;
+        private Text text;
 
         public GameState(int drawLimit)
         {
-            queue = new DrawQueue(drawLimit);
+            queue = new Rendering.Buffer(drawLimit);
 
         }
 
@@ -37,7 +38,10 @@ namespace Steelforge.Game
         {
             this.size = window.Size;
             this.center = new Vector2u(size.X / 2, size.Y / 2);
-            this.button = new Button(new Vector2f(25, center.Y), "AIDS", 72);
+            this.button = new Button(new Vector2f(25, center.Y), "mhm", 48);
+
+            this.text = new Text("Hello", Engine.engineFont);
+            this.text.Position = new Vector2f(500, 360);
 
         }
 
@@ -60,12 +64,37 @@ namespace Steelforge.Game
                 Debug.Write("M1 Pressed, MOUSE_VELOCITY: " + InputManager.MOUSE_VELOCITY);
 
             }
+
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_W))
+            {
+                this.text.Position += new Vector2f(0, -10);
+
+            }
+
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_A))
+            {
+                this.text.Position += new Vector2f(-10, 0);
+
+            }
+
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_S))
+            {
+                this.text.Position += new Vector2f(0, 10);
+
+            }
+
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_D))
+            {
+                this.text.Position += new Vector2f(10, 0);
+
+            }
         }
 
         public override void FixedUpdate(Time time)
         {
             queue.Clear();
             queue.Add(button);
+            queue.Add(text);
             foreach (GameObject gObj in GameObject.gameObjects)
             {
                 queue.Add(gObj);
@@ -73,9 +102,9 @@ namespace Steelforge.Game
             }
         }
 
-        public override void Render(ref DrawQueue queueOut)
+        public override void Render(ref Rendering.Buffer bufferOut)
         {
-            queueOut = queue;
+            bufferOut = queue;
 
         }
     }

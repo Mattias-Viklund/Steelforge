@@ -15,14 +15,14 @@ namespace Steelforge.GUI
 
         public Button(Vector2f position, string text, uint fontSize = 14, byte opacity = 255)
         {
-            this.background = new RectangleShape(new Vector2f(text.Length * fontSize + (fontSize / 2), fontSize + (fontSize / 2)));
-            this.background.FillColor = new Color(255, 255, 255, opacity);
-            this.background.Position = position;
-
-            this.text = new Text(text, Engine.engineFont);
+            this.text = new Text(text.ToUpper(), Engine.engineFont);
             this.text.Color = Color.Black;
             this.text.CharacterSize = fontSize;
-            this.text.Position = position + new Vector2f(fontSize, (fontSize / 5));
+            this.text.Position = position + new Vector2f(15, 15);
+
+            this.background = new RectangleShape(new Vector2f(this.text.GetGlobalBounds().Width + 30, this.text.GetGlobalBounds().Height + 30));
+            this.background.Position = new Vector2f(this.text.GetGlobalBounds().Left - 15, this.text.GetGlobalBounds().Top - 15);
+            this.background.FillColor = new Color(255, 255, 255, opacity);
 
         }
 

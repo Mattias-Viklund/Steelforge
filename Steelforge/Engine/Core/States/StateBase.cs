@@ -60,7 +60,7 @@ namespace Steelforge.Core.States
         }
 
         public abstract void FixedUpdate(Time time);
-        public abstract void Render(ref DrawQueue queueOut);
+        public abstract void Render(ref Buffer bufferOut);
         public virtual void SendLine(string s) { }
 
         // Input
