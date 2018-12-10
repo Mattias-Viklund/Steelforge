@@ -101,10 +101,10 @@ namespace Steelforge
                 FixedUpdate(deltaTime);
                 window.Clear(clearColor);
 
-                LateUpdate(deltaTime);
-
                 // Draw our framebuffer
                 window.Draw(drawBuffer);
+
+                LateUpdate(deltaTime);
 
                 // Display the screen
                 window.Display();

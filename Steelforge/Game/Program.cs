@@ -25,8 +25,8 @@ namespace Steelforge.Game
             engine.SetDebug(true); 
 
             engine.GetWindow().RequestFocus();
-            //engine.SetCustomCursor(new Texture(".\\Game\\Assets\\Cursor.png"));
-            //engine.SetMouseMode(Misc.MouseMode.CustomCursor);
+            engine.SetCustomCursor(new Texture(".\\Game\\Assets\\Cursor.png"));
+            engine.SetMouseMode(Misc.MouseMode.CustomCursor);
 
             engine.Start();
 
