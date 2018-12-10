@@ -20,7 +20,7 @@ namespace Steelforge.Input
 
         public void MouseMoved(object sender, MouseMoveEventArgs e)
         {
-            MOUSE_POSITION = (Vector2f)Mouse.GetPosition();
+            MOUSE_POSITION = new Vector2f(e.X, e.Y);
             MOUSE_VELOCITY = MOUSE_POSITION - oldPosition;
             oldPosition = MOUSE_POSITION;
 

@@ -21,7 +21,7 @@ namespace Steelforge.TileSystem
 
         }
 
-        public override void Draw(RenderWindow target, RenderStates states)
+        public void Draw(RenderWindow target, RenderStates states)
         {
             foreach (Tile tile in tiles)
             {

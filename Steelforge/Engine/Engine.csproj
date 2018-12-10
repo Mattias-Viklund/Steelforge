@@ -106,7 +106,11 @@
     <Compile Include="Misc\DebugUtils.cs" />
     <Compile Include="Misc\MouseMode.cs" />
     <Compile Include="Objects\GameObject.cs" />
-    <Compile Include="Objects\Placeholder.cs" />
+    <Compile Include="Objects\Primitive.cs" />
+    <Compile Include="Objects\Primitives\Circle.cs" />
+    <Compile Include="Objects\Primitives\PrimitiveBase.cs" />
+    <Compile Include="Objects\Primitives\Rectangle.cs" />
+    <Compile Include="Objects\Primitives\VertexCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\DrawQueue.cs" />
     <Compile Include="Core\States\StateBase.cs" />

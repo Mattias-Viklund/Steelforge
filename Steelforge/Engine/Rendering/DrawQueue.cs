@@ -32,9 +32,6 @@ namespace Steelforge.Rendering
             {
                 for (int i = 0; i < items; i++)
                 {
-                    if (items == maxItems - 1)
-                        break;
-
                     // Draw all items in the queue;
                     (target as RenderWindow).Draw(drawables[i]);
 

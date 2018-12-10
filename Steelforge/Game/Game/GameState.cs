@@ -58,7 +58,6 @@ namespace Steelforge.Game
             if (InputManager.MouseButtonPressed(GlobalConstants.MOUSE_1))
             {
                 Debug.Write("M1 Pressed, MOUSE_VELOCITY: " + InputManager.MOUSE_VELOCITY);
-                GameObject.Create(new Placeholder(new RectangleShape(new Vector2f(20, 20)) { Position = InputManager.MOUSE_POSITION }));
 
             }
         }
