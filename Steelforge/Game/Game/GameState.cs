@@ -19,7 +19,7 @@ namespace Steelforge.Game
 {
     class GameState : StateBase
     {
-        private Rendering.Buffer queue;
+        private DrawBuffer queue;
 
         // Keep track of the screen
         private Vector2u size;
@@ -30,7 +30,7 @@ namespace Steelforge.Game
 
         public GameState(int drawLimit)
         {
-            queue = new Rendering.Buffer(drawLimit);
+            queue = new DrawBuffer(drawLimit);
 
         }
 
@@ -43,13 +43,15 @@ namespace Steelforge.Game
             this.text = new Text("Hello", Engine.engineFont);
             this.text.Position = new Vector2f(500, 360);
 
+            base.RequestExtendedUpdate();
+
         }
 
         public override void Update(Time time)
         {
             if (InputManager.PRESSED_KEYS != 0)
             {
-                Debug.Write("Pressed Keys: "+InputManager.PRESSED_KEYS);
+                Debug.Write("Pressed Keys: " + InputManager.PRESSED_KEYS);
 
             }
 
@@ -102,9 +104,14 @@ namespace Steelforge.Game
             }
         }
 
-        public override void Render(ref Rendering.Buffer bufferOut)
+        protected override void Update(Time time, Engine engine)
         {
-            bufferOut = queue;
+
+        }
+
+        public override DrawBuffer Render()
+        {
+            return queue;
 
         }
     }

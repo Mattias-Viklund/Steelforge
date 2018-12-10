@@ -2,7 +2,7 @@
 
 namespace Steelforge.Rendering
 {
-    public class Buffer : Drawable
+    public class DrawBuffer : Drawable
     {
         private Drawable[] drawables;
         private int maxItems;
@@ -11,7 +11,7 @@ namespace Steelforge.Rendering
 
         // Drawable is anything that can be drawn by a RenderWindow.
         // This creates a static array that can be filled with drawables.
-        public Buffer(int maxItems)
+        public DrawBuffer(int maxItems)
         {
             drawables = new Drawable[maxItems];
             this.maxItems = maxItems;
@@ -40,15 +40,15 @@ namespace Steelforge.Rendering
         }
 
         // Returns the success of the operation.
-        public bool Add(Drawable d)
+        public int Add(Drawable d)
         {
             if (items == maxItems)
-                return false;
+                return -1;
 
             drawables[items] = d;
             items++;
 
-            return true;
+            return items;
 
         }
     }

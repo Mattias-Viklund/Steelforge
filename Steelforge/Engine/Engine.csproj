@@ -113,8 +113,9 @@
     <Compile Include="Objects\Primitives\VertexCollection.cs" />
     <Compile Include="Objects\Physics\Rigidbody.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rendering\Buffer.cs" />
+    <Compile Include="Rendering\DrawBuffer.cs" />
     <Compile Include="Core\States\StateBase.cs" />
+    <Compile Include="Rendering\StaticDrawable.cs" />
     <Compile Include="TileSystem\Tile.cs" />
     <Compile Include="TileSystem\TileSet.cs" />
   </ItemGroup>

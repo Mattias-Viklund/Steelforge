@@ -7,7 +7,7 @@ namespace Steelforge.Core.States
 {
     public class EmptyState : StateBase
     {
-        private Buffer drawBuffer = new Buffer(0);
+        private DrawBuffer drawBuffer = new DrawBuffer(0);
 
         public override void FixedUpdate(Time time)
         {
@@ -25,9 +25,10 @@ namespace Steelforge.Core.States
         {
         }
 
-        public override void Render(ref Buffer bufferOut)
+        public override DrawBuffer Render()
         {
-            bufferOut = this.drawBuffer;
+            return drawBuffer;
+
         }
 
         public override void Update(Time time)

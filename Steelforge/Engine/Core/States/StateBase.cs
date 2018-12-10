@@ -51,17 +51,16 @@ namespace Steelforge.Core.States
 
         // Does the StateBase want control over the RenderWindow?
         // Let them have it
-        protected virtual void Update(Time time, RenderWindow window) { }
-        public void ExtendedUpdate(Time time, RenderWindow window)
+        protected virtual void Update(Time time, Engine engine) { }
+        public void ExtendedUpdate(Time time, Engine engine)
         {
-            Update(time, window);
+            Update(time, engine);
             this.needsExtendedUpdate = false;
 
         }
 
         public abstract void FixedUpdate(Time time);
-        public abstract void Render(ref Buffer bufferOut);
-        public virtual void SendLine(string s) { }
+        public abstract DrawBuffer Render();
 
         // Input
         public virtual void MouseMoved(object sender, MouseMoveEventArgs e) { }

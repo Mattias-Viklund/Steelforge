@@ -32,7 +32,7 @@ namespace Steelforge
 
         // Window stuff
         private RenderWindow window;
-        private Rendering.Buffer drawBuffer = new Rendering.Buffer(0);
+        private DrawBuffer staticDrawBuffer = new DrawBuffer(0xFFFF);
         private DebugUtils debugUtils = new DebugUtils(engineFont);
 
         private MouseMode mouseMode = MouseMode.Default;
@@ -83,7 +83,7 @@ namespace Steelforge
                 window.DispatchEvents();
 
                 if (currentState.WantsExtendedUpdate())
-                    currentState.ExtendedUpdate(deltaTime, window);
+                    currentState.ExtendedUpdate(deltaTime, this);
 
                 //Fixed time update
                 while (lag >= timePerUpdate)
@@ -94,15 +94,15 @@ namespace Steelforge
 
                 }
 
-                // Hand over control of the drawBuffer to the current state.
-                currentState.Render(ref drawBuffer);
+
 
                 // TODO: Add comment that makes sense
                 FixedUpdate(deltaTime);
                 window.Clear(clearColor);
 
                 // Draw our framebuffer
-                window.Draw(drawBuffer);
+                window.Draw(staticDrawBuffer);
+                window.Draw(currentState.Render());
 
                 LateUpdate(deltaTime);
 
@@ -121,6 +121,12 @@ namespace Steelforge
 
             }
             this.newState = state;
+
+        }
+
+        public int AddStaticDrawable(StaticDrawable drawable)
+        {
+            return staticDrawBuffer.Add(drawable);
 
         }
 
