@@ -17,26 +17,16 @@ namespace Steelforge.Objects
         // If it has no index, set it to -1
         private int index = -1;
 
-        protected Drawable[] drawable;
+        protected bool enabled = true;
+
         protected Vector2f position;
         protected string name;
 
-        protected bool enabled = true;
+        private bool hasHitbox = false;
+        protected FloatRect hitbox;
 
         public GameObject(bool macro = true)
         {
-            if (macro)
-            {
-                gameObjects.Add(this);
-                this.index = gameObjects.Count - 1;
-
-            }
-        }
-
-        public GameObject(Drawable[] drawable, bool macro = true)
-        {
-            this.drawable = drawable;
-
             if (macro)
             {
                 gameObjects.Add(this);
@@ -63,12 +53,22 @@ namespace Steelforge.Objects
 
         }
 
-        /// <summary>
-        /// Special need to update a specific object?
-        /// </summary>
-        public virtual void Update()
+        public bool HasHitbox()
         {
+            return hasHitbox;
 
+        }
+
+        public FloatRect GetHitbox()
+        {
+            return hitbox;
+
+        }
+
+        public void SetHitbox(FloatRect hitbox)
+        {
+            this.hitbox = hitbox;
+            this.hasHitbox = true;
 
         }
 
@@ -103,17 +103,9 @@ namespace Steelforge.Objects
 
         }
         
-        public void Draw(RenderTarget target, RenderStates states)
+        public virtual void Draw(RenderTarget target, RenderStates states)
         {
-            if (target is RenderWindow)
-            {
-                RenderWindow window = (target as RenderWindow);
-                foreach (Drawable d in drawable)
-                {
-                    window.Draw(d);
 
-                }
-            }
         }
     }
 }

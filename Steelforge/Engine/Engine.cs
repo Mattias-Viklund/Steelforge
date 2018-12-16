@@ -221,11 +221,11 @@ namespace Steelforge
 
         private void LateUpdate(Time time)
         {
-            DrawDebugTools(time);
+            // DrawDebugTools(time);
 
             if (mouseMode == MouseMode.CustomCursor)
             {
-                cursor.SetPosition((Vector2f)Mouse.GetPosition() - (Vector2f)window.Position);
+                cursor.SetPosition(InputManager.MOUSE_POSITION);
                 window.Draw(cursor);
 
             }

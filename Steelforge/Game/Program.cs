@@ -21,8 +21,8 @@ namespace Steelforge.Game
             gameState = new GameState(20);
 
             engine.PushState(gameState);
-            engine.SetClearColor(Color.Green);
-            engine.SetDebug(true); 
+            engine.SetClearColor(Color.Black);
+            engine.SetDebug(true);
 
             engine.GetWindow().RequestFocus();
             engine.SetCustomCursor(new Texture(".\\Game\\Assets\\Cursor.png"));
@@ -31,6 +31,11 @@ namespace Steelforge.Game
             engine.Start();
 
             Console.WriteLine("Finished Execution.");
+
+        }
+
+        static void Draw(int x)
+        {
 
         }
     }

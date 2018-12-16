@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using Steelforge.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Steelforge.GUI
 {
-    public class Button : Drawable
+    public class Button : GameObject
     {
         private RectangleShape background;
         private Text text;
@@ -23,6 +24,8 @@ namespace Steelforge.GUI
             this.background = new RectangleShape(new Vector2f(this.text.GetGlobalBounds().Width + 30, this.text.GetGlobalBounds().Height + 30));
             this.background.Position = new Vector2f(this.text.GetGlobalBounds().Left - 15, this.text.GetGlobalBounds().Top - 15);
             this.background.FillColor = new Color(255, 255, 255, opacity);
+
+            this.SetPosition(this.background.Position);
 
         }
 
