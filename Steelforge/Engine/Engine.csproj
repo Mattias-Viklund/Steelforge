@@ -99,7 +99,6 @@
     <Compile Include="Core\States\EmptyState.cs" />
     <Compile Include="Core\GlobalConstants.cs" />
     <Compile Include="GUI\Button.cs" />
-    <Compile Include="GUI\Label.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Misc\DebugUtils.cs" />
@@ -112,10 +111,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\DrawBuffer.cs" />
     <Compile Include="Core\States\StateBase.cs" />
-    <Compile Include="Rendering\ExtendedRenderWindow.cs" />
     <Compile Include="Rendering\StaticDrawable.cs" />
     <Compile Include="TileSystem\Tile.cs" />
     <Compile Include="TileSystem\TileSet.cs" />
+    <Compile Include="Util\Conversion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lucon.ttf">

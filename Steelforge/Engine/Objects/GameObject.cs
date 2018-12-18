@@ -47,9 +47,12 @@ namespace Steelforge.Objects
 
         }
 
-        public void SetPosition(Vector2f position)
+        public void SetPosition(Vector2f position, bool add = false)
         {
-            this.position = position;
+            if (add)
+                this.position += position;
+            else
+                this.position = position;
 
         }
 
@@ -102,7 +105,7 @@ namespace Steelforge.Objects
             return true;
 
         }
-        
+
         public virtual void Draw(RenderTarget target, RenderStates states)
         {
 

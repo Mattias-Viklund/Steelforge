@@ -100,9 +100,10 @@ namespace Steelforge
                 FixedUpdate(deltaTime);
                 window.Clear(clearColor);
 
+                staticDrawBuffer = currentState.Render();
+
                 // Draw our framebuffer
-                window.Draw(staticDrawBuffer);
-                window.Draw(currentState.Render());
+                staticDrawBuffer.Draw(window);
 
                 LateUpdate(deltaTime);
 
@@ -221,7 +222,7 @@ namespace Steelforge
 
         private void LateUpdate(Time time)
         {
-            // DrawDebugTools(time);
+            DrawDebugTools(time);
 
             if (mouseMode == MouseMode.CustomCursor)
             {

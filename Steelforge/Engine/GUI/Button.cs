@@ -13,8 +13,10 @@ namespace Steelforge.GUI
     {
         private RectangleShape background;
         private Text text;
+        private bool highlight = false;
 
         public Button(Vector2f position, string text, uint fontSize = 14, byte opacity = 255)
+            : base(false)
         {
             this.text = new Text(text.ToUpper(), Engine.engineFont);
             this.text.Color = Color.Black;
@@ -29,14 +31,20 @@ namespace Steelforge.GUI
 
         }
 
-        public void Draw(RenderTarget target, RenderStates states)
+        public void Highlight(bool highlight)
+        {
+            this.highlight = highlight;
+
+        }
+
+        public override void Draw(RenderTarget target, RenderStates states)
         {
             if (target is RenderWindow)
             {
                 RenderWindow window = (target as RenderWindow);
 
-                window.Draw(background);
-                window.Draw(text);
+                window.Draw(background, states);
+                window.Draw(text, states);
 
             }
         }

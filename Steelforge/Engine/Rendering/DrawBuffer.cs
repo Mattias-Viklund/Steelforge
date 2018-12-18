@@ -1,12 +1,15 @@
 ﻿using SFML.Graphics;
+using SFML.System;
+using System;
 
 namespace Steelforge.Rendering
 {
-    public class DrawBuffer : Drawable
+    public class DrawBuffer
     {
         private Drawable[] drawables;
-        private int maxItems;
+        private Vector2f[] offsets;
 
+        private int maxItems;
         private int items = 0;
 
         // Drawable is anything that can be drawn by a RenderWindow.
@@ -14,6 +17,7 @@ namespace Steelforge.Rendering
         public DrawBuffer(int maxItems)
         {
             drawables = new Drawable[maxItems];
+            offsets = new Vector2f[maxItems];
             this.maxItems = maxItems;
 
         }
@@ -25,17 +29,33 @@ namespace Steelforge.Rendering
 
         }
 
-        // Interface Draw function, passes (hopefully) a RenderWindow as a target.
-        public void Draw(RenderTarget target, RenderStates states)
+        public int GetItems()
         {
-            if (target is RenderWindow)
+            return items;
+
+        }
+
+        // Interface Draw function, passes (hopefully) a RenderWindow as a target.
+        public void Draw(RenderWindow window)
+        {
+            RenderStates state = RenderStates.Default;
+            Vector2f offset = new Vector2f();
+
+            for (int i = 0; i < items; i++)
             {
-                for (int i = 0; i < items; i++)
+                offset = offsets[i];
+
+                if (offset.X != 0 || offset.Y != 0)
                 {
-                    // Draw all items in the queue;
-                    (target as RenderWindow).Draw(drawables[i]);
+                    state.Transform.Translate(offset);
+                    window.Draw(drawables[i], state);
+
+                    state.Transform.Translate(-offset);
 
                 }
+                else
+                    window.Draw(drawables[i]);
+
             }
         }
 
@@ -46,6 +66,20 @@ namespace Steelforge.Rendering
                 return -1;
 
             drawables[items] = d;
+            items++;
+
+            return items;
+
+        }
+
+        // Returns the success of the operation.
+        public int Add(Drawable d, Vector2f offset)
+        {
+            if (items == maxItems)
+                return -1;
+
+            drawables[items] = d;
+            offsets[items] = offset;
             items++;
 
             return items;

@@ -25,6 +25,8 @@ namespace Steelforge.Game
         private Vector2u size;
         private Vector2u center;
 
+        private Vector2f offset = new Vector2f();
+
         private Button button;
         private Text text;
 
@@ -38,7 +40,7 @@ namespace Steelforge.Game
         {
             this.size = window.Size;
             this.center = new Vector2u(size.X / 2, size.Y / 2);
-            this.button = new Button(new Vector2f(25, center.Y), "mhm", 48);
+            this.button = new Button(new Vector2f(25, center.Y), "Motorbiking, Streak of lightning", 48);
 
             this.text = new Text("Hello", Engine.engineFont);
             this.text.Position = new Vector2f(500, 360);
@@ -69,25 +71,25 @@ namespace Steelforge.Game
 
             if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_W))
             {
-                this.text.Position += new Vector2f(0, -10);
+                this.offset += new Vector2f(0, -10);
 
             }
 
             if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_A))
             {
-                this.text.Position += new Vector2f(-10, 0);
+                this.offset += new Vector2f(-10, 0);
 
             }
 
             if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_S))
             {
-                this.text.Position += new Vector2f(0, 10);
+                this.offset += new Vector2f(0, 10);
 
             }
 
             if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_D))
             {
-                this.text.Position += new Vector2f(10, 0);
+                this.offset += new Vector2f(10, 0);
 
             }
         }
@@ -95,8 +97,9 @@ namespace Steelforge.Game
         public override void FixedUpdate(Time time)
         {
             queue.Clear();
-            queue.Add(button);
-            queue.Add(text);
+            queue.Add(text, offset);
+            queue.Add(button, -offset);
+
             foreach (GameObject gObj in GameObject.gameObjects)
             {
                 queue.Add(gObj);
