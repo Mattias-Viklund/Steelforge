@@ -62,10 +62,6 @@ namespace Steelforge.Core.States
         public abstract void FixedUpdate(Time time);
         public abstract DrawBuffer Render();
 
-        // Input
-        public virtual void MouseMoved(object sender, MouseMoveEventArgs e) { }
-        public virtual void MouseScrolled(object sender, MouseWheelEventArgs e) { }
-
         protected void Close()
         {
             Engine.Push(Command.Close);

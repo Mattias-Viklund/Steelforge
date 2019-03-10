@@ -17,14 +17,6 @@ namespace Steelforge.Core.States
         {
         }
 
-        public override void MouseMoved(object sender, MouseMoveEventArgs e)
-        {
-        }
-
-        public override void MouseScrolled(object sender, MouseWheelEventArgs e)
-        {
-        }
-
         public override DrawBuffer Render()
         {
             return drawBuffer;

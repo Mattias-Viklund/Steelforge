@@ -25,10 +25,11 @@ namespace Steelforge.Game
         private Vector2u size;
         private Vector2u center;
 
+        private Grid grid = new Grid(100.0f, 20.0f);
+
         private Vector2f offset = new Vector2f();
 
-        private Button button;
-        private Text text;
+        private float movementSpeed = 500.0f;
 
         public GameState(int drawLimit)
         {
@@ -40,10 +41,6 @@ namespace Steelforge.Game
         {
             this.size = window.Size;
             this.center = new Vector2u(size.X / 2, size.Y / 2);
-            this.button = new Button(new Vector2f(25, center.Y), "Motorbiking, Streak of lightning", 48);
-
-            this.text = new Text("Hello", Engine.engineFont);
-            this.text.Position = new Vector2f(500, 360);
 
             base.RequestExtendedUpdate();
 
@@ -51,54 +48,27 @@ namespace Steelforge.Game
 
         public override void Update(Time time)
         {
-            if (InputManager.PRESSED_KEYS != 0)
-            {
-                Debug.Write("Pressed Keys: " + InputManager.PRESSED_KEYS);
-
-            }
-
             if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_ESCAPE))
             {
                 base.Close();
 
             }
 
-            if (InputManager.MouseButtonPressed(GlobalConstants.MOUSE_1))
+            int scroll = InputManager.ReadScroll();
+            if (scroll != 0)
             {
-                Debug.Write("M1 Pressed, MOUSE_VELOCITY: " + InputManager.MOUSE_VELOCITY);
+                grid.Zoom(scroll * 0.05f);
 
             }
 
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_W))
-            {
-                this.offset += new Vector2f(0, -10);
+            this.offset += InputManager.MOUSE_VELOCITY * movementSpeed * time.AsSeconds();
 
-            }
-
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_A))
-            {
-                this.offset += new Vector2f(-10, 0);
-
-            }
-
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_S))
-            {
-                this.offset += new Vector2f(0, 10);
-
-            }
-
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_D))
-            {
-                this.offset += new Vector2f(10, 0);
-
-            }
         }
 
         public override void FixedUpdate(Time time)
         {
             queue.Clear();
-            queue.Add(text, offset);
-            queue.Add(button, -offset);
+            queue.Add(grid);
 
             foreach (GameObject gObj in GameObject.gameObjects)
             {

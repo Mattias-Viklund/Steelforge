@@ -14,6 +14,8 @@ namespace Steelforge.Input
         public static int PRESSED_KEYS = 0x0;
         public static int PRESSED_MOUSEBUTTONS = 0x0;
 
+        private static int MOUSEWHEEL_DELTA = 0x0;
+
         public static Vector2f MOUSE_VELOCITY = new Vector2f();
         public static Vector2f MOUSE_POSITION = new Vector2f();
         private Vector2f oldPosition = new Vector2f();
@@ -46,6 +48,20 @@ namespace Steelforge.Input
                 case Mouse.Button.Right: PRESSED_MOUSEBUTTONS &= ~GlobalConstants.MOUSE_2; break;
 
             }
+        }
+
+        public void MouseScrolled(object sender, MouseWheelEventArgs e)
+        {
+            MOUSEWHEEL_DELTA = e.Delta;
+
+        }
+
+        public static int ReadScroll()
+        {
+            int temp = MOUSEWHEEL_DELTA;
+            MOUSEWHEEL_DELTA = 0;
+            return temp;
+
         }
 
         public void KeyDown(KeyEventArgs e)

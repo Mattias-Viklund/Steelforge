@@ -22,7 +22,7 @@ namespace Steelforge.Game
 
             engine.PushState(gameState);
             engine.SetClearColor(Color.Black);
-            engine.SetDebug(true);
+            engine.SetDebug(false);
 
             engine.GetWindow().RequestFocus();
             engine.SetCustomCursor(new Texture(".\\Game\\Assets\\Cursor.png"));

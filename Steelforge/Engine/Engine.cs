@@ -205,24 +205,23 @@ namespace Steelforge
         #region Private
         private void DrawDebugTools(Time time)
         {
-            if (_debug)
-            {
                 debugUtils.UpdateFPS(time);
                 window.Draw(debugUtils);
 
-            }
         }
 
         private void FixedUpdate(Time time)
         {
-            Debug.Flush();
+            if (_debug)
+                Debug.Flush();
             currentState.FixedUpdate(time);
 
         }
 
         private void LateUpdate(Time time)
         {
-            DrawDebugTools(time);
+            if (_debug)
+                DrawDebugTools(time);
 
             if (mouseMode == MouseMode.CustomCursor)
             {
@@ -238,7 +237,10 @@ namespace Steelforge
         private void Update(Time time)
         {
             if (mouseMode == MouseMode.FPS)
+            {
                 Mouse.SetPosition(window.Position + (Vector2i)(window.Size / 2));
+
+            }
 
             currentState.Update(time);
 
@@ -277,15 +279,15 @@ namespace Steelforge
             window.KeyReleased += new EventHandler<KeyEventArgs>(KeyUp);
             window.MouseButtonPressed += new EventHandler<MouseButtonEventArgs>(MouseDown);
             window.MouseButtonReleased += new EventHandler<MouseButtonEventArgs>(MouseUp);
-            window.MouseMoved += new EventHandler<MouseMoveEventArgs>(MouseMoved);
             window.MouseWheelMoved += new EventHandler<MouseWheelEventArgs>(MouseScrolled);
             window.SetKeyRepeatEnabled(false);
+            window.MouseMoved += new EventHandler<MouseMoveEventArgs>(MouseMoved);
 
         }
 
         private void MouseScrolled(object sender, MouseWheelEventArgs e)
         {
-            currentState.MouseScrolled(sender, e);
+            inputManager.MouseScrolled(sender, e);
 
         }
 
