@@ -20,6 +20,8 @@ namespace Steelforge
         public static InputManager inputManager = new InputManager();
         private static Command command = Command.None;
 
+        private _EventHandler eventHandler = new _EventHandler();
+
         // Initialize the states
         private static StateBase currentState = StateBase._empty;
         private StateBase newState = currentState;
@@ -85,7 +87,7 @@ namespace Steelforge
                 if (currentState.WantsExtendedUpdate())
                     currentState.ExtendedUpdate(deltaTime, this);
 
-                //Fixed time update
+                // Update for set amount of time
                 while (lag >= timePerUpdate)
                 {
                     ticks++;
@@ -94,10 +96,10 @@ namespace Steelforge
 
                 }
 
-
-
                 // TODO: Add comment that makes sense
                 FixedUpdate(deltaTime);
+                CheckEvents(deltaTime);
+
                 window.Clear(clearColor);
 
                 staticDrawBuffer = currentState.Render();
@@ -111,6 +113,12 @@ namespace Steelforge
                 window.Display();
 
             }
+        }
+
+        private void CheckEvents(Time time)
+        {
+
+
         }
 
         // Push a State
