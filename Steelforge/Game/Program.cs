@@ -11,7 +11,7 @@ namespace Steelforge.Game
     {
         public static Engine engine;
         // public static GameState gameState;
-        public static NewState gameState;
+        public static GameState gameState;
 
         static void Main(string[] args)
         {
@@ -19,7 +19,7 @@ namespace Steelforge.Game
             Console.WriteLine("Starting Steelforge");
 
             engine = new Engine(new RenderWindow(new VideoMode(1280, 720), "Steelforge Debug"));
-            gameState = new NewState(20);
+            gameState = new GameState(20);
 
             engine.PushState(gameState);
             engine.SetClearColor(Color.Black);

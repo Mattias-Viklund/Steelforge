@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Steelforge.Core.States;
 using Steelforge.Objects;
+using Steelforge.Game.Components;
 
 namespace Steelforge.Game
 {
@@ -25,11 +26,8 @@ namespace Steelforge.Game
         private Vector2u size;
         private Vector2u center;
 
-        private Grid grid = new Grid(100.0f, 20.0f);
-
         private Vector2f offset = new Vector2f();
-
-        private float movementSpeed = 500.0f;
+        private Graph graph = new Graph(new Vector2f(), new Vector2f());
 
         public GameState(int drawLimit)
         {
@@ -54,25 +52,16 @@ namespace Steelforge.Game
 
             }
 
-            int scroll = InputManager.ReadScroll();
-            if (scroll != 0)
-            {
-                grid.Zoom(scroll * 0.05f);
-
-            }
-
-            this.offset += InputManager.MOUSE_VELOCITY * movementSpeed * time.AsSeconds();
 
         }
 
         public override void FixedUpdate(Time time)
         {
             queue.Clear();
-            queue.Add(grid);
 
-            foreach (GameObject gObj in GameObject.gameObjects)
+            foreach (GameObject g in GameObject.gameObjects)
             {
-                queue.Add(gObj);
+                queue.Add(g);
 
             }
         }

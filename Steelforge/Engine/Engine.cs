@@ -117,7 +117,7 @@ namespace Steelforge
 
         private void CheckEvents(Time time)
         {
-
+            eventHandler.CheckEvents(time);
 
         }
 
