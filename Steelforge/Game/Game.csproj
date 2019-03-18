@@ -96,9 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game\GameState.cs" />
-    <Compile Include="Game\Grid.cs" />
-    <Compile Include="Game\NewState.cs" />
-    <Compile Include="Game\SplitLine.cs" />
+    <Compile Include="Game\Square.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

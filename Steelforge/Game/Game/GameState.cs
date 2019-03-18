@@ -25,15 +25,24 @@ namespace Steelforge.Game
         private Vector2u size;
         private Vector2u center;
 
-        private Grid grid = new Grid(100.0f, 20.0f);
-
-        private Vector2f offset = new Vector2f();
-
-        private float movementSpeed = 500.0f;
+        private Square[] squares = new Square[3];
+        private Text selectedSquareText = new Text("Selected Square: 0", Engine.engineFont, 14) { Position = new Vector2f(50, 50) };
+        private int selectedSquare = 0;
+        private Vector2f squareVelocity = new Vector2f(200, 0);
 
         public GameState(int drawLimit)
         {
             queue = new DrawBuffer(drawLimit);
+
+            FillSquares();
+
+        }
+
+        private void FillSquares()
+        {
+            squares[0] = new Square(new Vector2f(200, 200), new Vector2f(500, 500), Color.Yellow);
+            squares[1] = new Square(new Vector2f(200, 200), new Vector2f(800, 500), Color.Blue);
+            squares[2] = new Square(new Vector2f(200, 200), new Vector2f(1000, 500), Color.White);
 
         }
 
@@ -53,22 +62,63 @@ namespace Steelforge.Game
                 base.Close();
 
             }
+        }
 
-            int scroll = InputManager.ReadScroll();
-            if (scroll != 0)
+        private void SelectSquare(bool next)
+        {
+            if (next)
             {
-                grid.Zoom(scroll * 0.05f);
+                selectedSquare++;
+                if (selectedSquare == squares.Length)
+                    selectedSquare = 0;
+
+            }
+            else
+            {
+                selectedSquare--;
+                if (selectedSquare < 0)
+                    selectedSquare = squares.Length - 1;
 
             }
 
-            this.offset += InputManager.MOUSE_VELOCITY * movementSpeed * time.AsSeconds();
+            selectedSquareText.DisplayedString = "Selected Square: " + selectedSquare;
+
+        }
+
+        private void MoveSquare(bool left, Time time)
+        {
+            if (left)
+                squares[selectedSquare].Move(-squareVelocity * time.AsSeconds());
+            else
+                squares[selectedSquare].Move(squareVelocity * time.AsSeconds());
 
         }
 
         public override void FixedUpdate(Time time)
         {
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_UP))
+                SelectSquare(true);
+
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_DOWN))
+                SelectSquare(false);
+
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_LEFT))
+                MoveSquare(true, time);
+
+            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_RIGHT))
+                MoveSquare(false, time);
+
             queue.Clear();
-            queue.Add(grid);
+
+            for (int i = 0; i < squares.Length; i++)
+                squares[i].collided = false;
+
+            Square.Collide(ref squares);
+
+            foreach (Square square in squares)
+                queue.Add(square);
+
+            queue.Add(selectedSquareText);
 
             foreach (GameObject gObj in GameObject.gameObjects)
             {

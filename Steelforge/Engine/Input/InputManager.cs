@@ -98,6 +98,11 @@ namespace Steelforge.Input
                 case Keyboard.Key.Y: PRESSED_KEYS |= GlobalConstants.KEYBOARD_Y; break;
                 case Keyboard.Key.Z: PRESSED_KEYS |= GlobalConstants.KEYBOARD_Z; break;
 
+                case Keyboard.Key.Up: PRESSED_KEYS |= GlobalConstants.KEYBOARD_UP; break;
+                case Keyboard.Key.Down: PRESSED_KEYS |= GlobalConstants.KEYBOARD_DOWN; break;
+                case Keyboard.Key.Left: PRESSED_KEYS |= GlobalConstants.KEYBOARD_LEFT; break;
+                case Keyboard.Key.Right: PRESSED_KEYS |= GlobalConstants.KEYBOARD_RIGHT; break;
+
                 case Keyboard.Key.Return: PRESSED_KEYS |= GlobalConstants.KEYBOARD_ENTER; break;
                 case Keyboard.Key.Escape: PRESSED_KEYS |= GlobalConstants.KEYBOARD_ESCAPE; break;
                 case Keyboard.Key.LShift: PRESSED_KEYS |= GlobalConstants.KEYBOARD_SHIFT; break;
@@ -141,6 +146,11 @@ namespace Steelforge.Input
                 case Keyboard.Key.X: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_X; break;
                 case Keyboard.Key.Y: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_Y; break;
                 case Keyboard.Key.Z: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_Z; break;
+
+                case Keyboard.Key.Up: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_UP; break;
+                case Keyboard.Key.Down: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_DOWN; break;
+                case Keyboard.Key.Left: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_LEFT; break;
+                case Keyboard.Key.Right: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_RIGHT; break;
 
                 case Keyboard.Key.Return: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_ENTER; break;
                 case Keyboard.Key.Escape: PRESSED_KEYS &= ~GlobalConstants.KEYBOARD_ESCAPE; break;

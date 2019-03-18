@@ -41,6 +41,10 @@ namespace Steelforge.Core
         public const int KEYBOARD_ESCAPE = (1 << 0x9C);
         public const int KEYBOARD_SHIFT = (1 << 0x9D);
         public const int KEYBOARD_CTRL = (1 << 0x9E);
+        public const int KEYBOARD_UP = (1 << 0x9F);
+        public const int KEYBOARD_DOWN = (1 << 0xA0);
+        public const int KEYBOARD_LEFT = (1 << 0xA1);
+        public const int KEYBOARD_RIGHT = (1 << 0xA2);
         // KEYBORD CONSTANTS
         // 0x00 - 0x9A
 
