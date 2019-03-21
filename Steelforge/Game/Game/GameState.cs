@@ -62,6 +62,12 @@ namespace Steelforge.Game
                 base.Close();
 
             }
+
+            for (int i = 0; i< squares.Length; i++)
+            {
+                squares[i].Update(time);
+
+            }
         }
 
         private void SelectSquare(bool next)
@@ -88,9 +94,9 @@ namespace Steelforge.Game
         private void MoveSquare(bool left, Time time)
         {
             if (left)
-                squares[selectedSquare].Move(-squareVelocity * time.AsSeconds());
+                squares[selectedSquare].SetVelocity(new Vector2f(-500, -300));
             else
-                squares[selectedSquare].Move(squareVelocity * time.AsSeconds());
+                squares[selectedSquare].SetVelocity(new Vector2f(500, 100));
 
         }
 

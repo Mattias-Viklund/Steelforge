@@ -8,10 +8,41 @@ using System.Threading.Tasks;
 
 namespace Steelforge.Game
 {
+    class CollisionInfo
+    {
+        private List<Square[]> collidedSquares;
+
+        public CollisionInfo()
+        {
+            collidedSquares = new List<Square[]>();
+
+        }
+
+        public void AddPair(Square[] pair)
+        {
+            collidedSquares.Add(pair);
+
+        }
+
+        public bool HasCollisions()
+        {
+            return collidedSquares.Count > 0;
+
+        }
+
+        public List<Square[]> GetCollidedSquares()
+        {
+            return collidedSquares;
+
+        }
+    }
+
     class Square : Drawable
     {
-        public static void Collide(ref Square[] squares)
+        public static CollisionInfo Collide(ref Square[] squares)
         {
+            CollisionInfo collisionInfo = new CollisionInfo();
+
             for (int i = 0; i < squares.Length; i++)
             {
                 int currentSquare = i;
@@ -23,17 +54,27 @@ namespace Steelforge.Game
 
                     if (squares[currentSquare].Collide(squares[j]))
                     {
+                        Square[] pair = new Square[2];
+                        pair[0] = squares[currentSquare];
+                        pair[1] = squares[j];
+
+                        collisionInfo.AddPair(pair);
+
                         squares[currentSquare].collided = true;
                         squares[j].collided = true;
 
                     }
                 }
             }
+            return collisionInfo;
+
         }
 
         private RectangleShape rect;
         private Vector2f position;
         private Color color;
+
+        private Vector2f velocity;
 
         public bool collided = false;
 
@@ -81,6 +122,18 @@ namespace Steelforge.Game
             }
 
             return false;
+
+        }
+
+        public void SetVelocity(Vector2f velocity)
+        {
+            this.velocity = velocity;
+
+        }
+
+        public void Update(Time time)
+        {
+            this.position += velocity * time.AsSeconds();
 
         }
 
