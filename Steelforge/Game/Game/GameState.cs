@@ -30,6 +30,8 @@ namespace Steelforge.Game
         private int selectedSquare = 0;
         private Vector2f squareVelocity = new Vector2f(200, 0);
 
+        private GameDrawable text1;
+
         public GameState(int drawLimit)
         {
             queue = new DrawBuffer(drawLimit);
@@ -124,12 +126,13 @@ namespace Steelforge.Game
             foreach (Square square in squares)
                 queue.Add(square);
 
-            queue.Add(selectedSquareText);
+            text1 = new GameRenderable(selectedSquareText);
+            queue.Add(text1);
 
             foreach (GameObject gObj in GameObject.gameObjects)
             {
                 queue.Add(gObj);
-
+ 
             }
         }
 

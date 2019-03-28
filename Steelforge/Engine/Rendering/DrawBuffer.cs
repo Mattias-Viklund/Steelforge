@@ -1,12 +1,13 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using Steelforge.Core;
 using System;
 
 namespace Steelforge.Rendering
 {
     public class DrawBuffer
     {
-        private Drawable[] drawables;
+        private GameDrawable[] drawables;
         private Vector2f[] offsets;
 
         private int maxItems;
@@ -16,7 +17,7 @@ namespace Steelforge.Rendering
         // This creates a static array that can be filled with drawables.
         public DrawBuffer(int maxItems)
         {
-            drawables = new Drawable[maxItems];
+            drawables = new GameDrawable[maxItems];
             offsets = new Vector2f[maxItems];
             this.maxItems = maxItems;
 
@@ -36,7 +37,7 @@ namespace Steelforge.Rendering
         }
 
         // Interface Draw function, passes (hopefully) a RenderWindow as a target.
-        public void Draw(RenderWindow window)
+        public void Draw(RenderTexture texture)
         {
             RenderStates state = RenderStates.Default;
             Vector2f offset = new Vector2f();
@@ -48,19 +49,19 @@ namespace Steelforge.Rendering
                 if (offset.X != 0 || offset.Y != 0)
                 {
                     state.Transform.Translate(offset);
-                    window.Draw(drawables[i], state);
+                    texture.Draw(drawables[i], state);
 
                     state.Transform.Translate(-offset);
 
                 }
                 else
-                    window.Draw(drawables[i]);
+                    texture.Draw(drawables[i]);
 
             }
         }
 
         // Returns the success of the operation.
-        public int Add(Drawable d)
+        public int Add(GameDrawable d)
         {
             if (items == maxItems)
                 return -1;
@@ -73,7 +74,7 @@ namespace Steelforge.Rendering
         }
 
         // Returns the success of the operation.
-        public int Add(Drawable d, Vector2f offset)
+        public int Add(GameDrawable d, Vector2f offset)
         {
             if (items == maxItems)
                 return -1;

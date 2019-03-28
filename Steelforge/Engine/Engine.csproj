@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="Core\Debug.cs" />
     <Compile Include="Core\EventHandler.cs" />
+    <Compile Include="Core\GameDrawable.cs" />
     <Compile Include="Input\CustomCursor.cs" />
     <Compile Include="Misc\Command.cs" />
     <Compile Include="Core\States\EmptyState.cs" />

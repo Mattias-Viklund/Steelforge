@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using Steelforge.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Steelforge.Rendering
 {
-    public class StaticDrawable : Drawable
+    public class StaticDrawable : GameDrawable
     {
         private bool Enabled
         {
@@ -16,24 +17,21 @@ namespace Steelforge.Rendering
 
         }
 
-        private Drawable drawable;
+        private GameDrawable drawable;
 
-        public StaticDrawable(Drawable drawable, bool enabled)
+        public StaticDrawable(GameDrawable drawable, bool enabled)
         {
             this.Enabled = enabled;
             this.drawable = drawable;
 
         }
 
-        public void Draw(RenderTarget target, RenderStates states)
+        public override void DrawTexture(RenderTexture texture, RenderStates states)
         {
             if (Enabled)
             {
-                if (target is RenderWindow)
-                {
-                    (target as RenderWindow).Draw(drawable);
+                texture.Draw(drawable);
 
-                }
             }
         }
     }

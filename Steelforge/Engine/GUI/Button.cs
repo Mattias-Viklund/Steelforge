@@ -37,16 +37,11 @@ namespace Steelforge.GUI
 
         }
 
-        public override void Draw(RenderTarget target, RenderStates states)
+        public override void DrawObject(RenderTexture texture, RenderStates states)
         {
-            if (target is RenderWindow)
-            {
-                RenderWindow window = (target as RenderWindow);
+                texture.Draw(background, states);
+                texture.Draw(text, states);
 
-                window.Draw(background, states);
-                window.Draw(text, states);
-
-            }
         }
     }
 }

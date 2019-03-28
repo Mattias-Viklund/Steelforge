@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Steelforge.Objects
 {
-    public class GameObject : Drawable
+    public class GameObject : GameDrawable
     {
         public static List<GameObject> gameObjects = new List<GameObject>();
 
@@ -106,8 +106,9 @@ namespace Steelforge.Objects
 
         }
 
-        public virtual void Draw(RenderTarget target, RenderStates states)
+        public virtual void DrawObject(RenderTexture texture, RenderStates state)
         {
+
 
         }
     }

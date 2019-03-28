@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using Steelforge.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Steelforge.Game
         }
     }
 
-    class Square : Drawable
+    class Square : GameDrawable
     {
         public static CollisionInfo Collide(ref Square[] squares)
         {
@@ -46,7 +47,7 @@ namespace Steelforge.Game
             for (int i = 0; i < squares.Length; i++)
             {
                 int currentSquare = i;
-                
+
                 for (int j = i; j < squares.Length; j++)
                 {
                     if (j == currentSquare)
@@ -92,19 +93,16 @@ namespace Steelforge.Game
 
         }
 
-        public void Draw(RenderTarget target, RenderStates states)
+        public override void DrawTexture(RenderTexture texture, RenderStates states)
         {
-            if (target is RenderWindow)
-            {
-                rect.Position = position;
-                if (collided)
-                    rect.FillColor = Color.Red;
-                else
-                    rect.FillColor = color;
+            rect.Position = position;
+            if (collided)
+                rect.FillColor = Color.Red;
+            else
+                rect.FillColor = color;
 
-                (target as RenderWindow).Draw(rect);
+            texture.Draw(rect);
 
-            }
         }
 
         public bool Collide(Square other)

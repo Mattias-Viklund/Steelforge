@@ -35,6 +35,7 @@ namespace Steelforge
         // Window stuff
         private RenderWindow window;
         private DrawBuffer staticDrawBuffer = new DrawBuffer(0xFFFF);
+        private RenderTexture texture;
         private DebugUtils debugUtils = new DebugUtils(engineFont);
 
         private MouseMode mouseMode = MouseMode.Default;
@@ -42,9 +43,17 @@ namespace Steelforge
 
         private Color clearColor = Color.Black;
 
+        // Render Texture
+        Sprite postLayer;
+
         public Engine(RenderWindow window)
         {
             this.window = window;
+            this.texture = new RenderTexture(window.Size.X, window.Size.Y);
+            this.texture.SetView(window.GetView());
+            this.postLayer = new Sprite();
+            this.postLayer.Position = new Vector2f(0, 0);
+            this.postLayer.TextureRect = new IntRect(0, (int)window.Size.Y, (int)window.Size.X, -(int)window.Size.Y);
             Setup();
 
         }
@@ -101,11 +110,16 @@ namespace Steelforge
                 CheckEvents(deltaTime);
 
                 window.Clear(clearColor);
+                texture.Clear();
 
                 staticDrawBuffer = currentState.Render();
 
                 // Draw our framebuffer
-                staticDrawBuffer.Draw(window);
+                staticDrawBuffer.Draw(texture);
+
+                this.postLayer.Texture = texture.Texture;
+
+                window.Draw(postLayer);
 
                 LateUpdate(deltaTime);
 

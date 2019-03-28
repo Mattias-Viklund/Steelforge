@@ -11,24 +11,22 @@ namespace Steelforge.Game
     {
         public static Engine engine;
         // public static GameState gameState;
-        public static GameState gameState;
+        public static Minesweeper gameState;
 
         static void Main(string[] args)
         {
             Console.Title = "Steelforge Debug";
             Console.WriteLine("Starting Steelforge");
 
-            engine = new Engine(new RenderWindow(new VideoMode(1280, 720), "Steelforge Debug"));
-            gameState = new GameState(20);
+            engine = new Engine(new RenderWindow(new VideoMode(400, 400), "Steelforge Debug"));
+            gameState = new Minesweeper();
 
             engine.PushState(gameState);
-            engine.SetClearColor(Color.Black);
+            engine.SetClearColor(new Color(220, 220, 220));
+
             engine.SetDebug(false);
 
             engine.GetWindow().RequestFocus();
-            engine.SetCustomCursor(new Texture(".\\Game\\Assets\\Cursor.png"));
-            engine.SetMouseMode(Misc.MouseMode.CustomCursor);
-
             engine.Start();
 
             Console.WriteLine("Finished Execution.");

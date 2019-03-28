@@ -95,8 +95,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\GameGUI.cs" />
+    <Compile Include="Game\Gameplay\Mine.cs" />
+    <Compile Include="Game\Gameplay\Minefield.cs" />
     <Compile Include="Game\GameState.cs" />
-    <Compile Include="Game\Square.cs" />
+    <Compile Include="Game\Minesweeper.cs" />
+    <Compile Include="Game\Gameplay\Square.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
