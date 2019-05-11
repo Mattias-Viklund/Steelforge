@@ -111,6 +111,11 @@
     <Compile Include="Objects\Primitive.cs" />
     <Compile Include="Objects\Physics\Rigidbody.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Rendering\DrawBuffer.cs" />
     <Compile Include="Core\States\StateBase.cs" />
     <Compile Include="Rendering\StaticDrawable.cs" />
@@ -119,9 +124,13 @@
     <Compile Include="Util\Conversion.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="lucon.ttf">
+    <EmbeddedResource Include="lucon.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Objects\Primitives\" />

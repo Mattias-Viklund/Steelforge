@@ -18,13 +18,17 @@ namespace Steelforge.Game
             Console.Title = "Steelforge Debug";
             Console.WriteLine("Starting Steelforge");
 
-            engine = new Engine(new RenderWindow(new VideoMode(400, 400), "Steelforge Debug"));
+            engine = new Engine(new RenderWindow(new VideoMode(1920, 1080), "Steelforge Debug", Styles.Fullscreen));
             gameState = new Minesweeper();
 
             engine.PushState(gameState);
             engine.SetClearColor(new Color(220, 220, 220));
 
             engine.SetDebug(false);
+
+            engine.SetMouseMode(Misc.MouseMode.CustomCursor);
+            engine.SetCustomCursor(new Texture("Cursor.png"));
+            engine.GetWindow().SetMouseCursorVisible(false);
 
             engine.GetWindow().RequestFocus();
             engine.Start();
