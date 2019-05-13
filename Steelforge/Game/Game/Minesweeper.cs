@@ -16,7 +16,6 @@ namespace Steelforge.Game
     class Minesweeper : StateBase
     {
         private DrawBuffer queue;
-        private GameDrawable grid = new GameRenderable(new RectangleShape(new Vector2f(50, 50)) { Position = new Vector2f(100, 50), FillColor = Color.Yellow });
         private Minefield minefield = new Minefield();
 
         public Minesweeper()
@@ -42,9 +41,6 @@ namespace Steelforge.Game
 
         public override void FixedUpdate(Time time)
         {
-            queue.Clear();
-            //queue.Add(grid);
-            queue.Add(minefield);
 
         }
 

@@ -18,7 +18,7 @@ namespace Steelforge.Game
             Console.Title = "Steelforge Debug";
             Console.WriteLine("Starting Steelforge");
 
-            engine = new Engine(new RenderWindow(new VideoMode(1920, 1080), "Steelforge Debug", Styles.Fullscreen));
+            engine = new Engine(new RenderWindow(new VideoMode(1920, 1080), "Steelforge Debug", Styles.Close));
             gameState = new Minesweeper();
 
             engine.PushState(gameState);
