@@ -9,6 +9,8 @@ namespace Steelforge.Core
 {
     public class GlobalConstants
     {
+        public static Vector2f VEC2F_ZERO = new Vector2f(0, 0);
+
         // MOUSE CONSTANTS
         public const int KEYBOARD_SPACE = (1 << 0x0);
         public const int KEYBOARD_A = (1 << 0x1);

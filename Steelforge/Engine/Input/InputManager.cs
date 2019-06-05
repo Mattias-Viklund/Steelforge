@@ -19,12 +19,23 @@ namespace Steelforge.Input
         public static Vector2f MOUSE_VELOCITY = new Vector2f();
         public static Vector2f MOUSE_POSITION = new Vector2f();
         private Vector2f oldPosition = new Vector2f();
+        private bool ignoreNextMouseInput = false;
 
         public void MouseMoved(object sender, MouseMoveEventArgs e)
         {
             MOUSE_POSITION = new Vector2f(e.X, e.Y);
-            MOUSE_VELOCITY = MOUSE_POSITION - oldPosition;
+
+            if (!ignoreNextMouseInput)
+                MOUSE_VELOCITY = MOUSE_POSITION - oldPosition;
+
             oldPosition = MOUSE_POSITION;
+            ignoreNextMouseInput = false;
+
+        }
+
+        public void IgnoreNextMouseInput()
+        {
+            this.ignoreNextMouseInput = true;
 
         }
 

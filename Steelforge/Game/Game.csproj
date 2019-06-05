@@ -99,6 +99,8 @@
     <Compile Include="Game\Gameplay\Mine.cs" />
     <Compile Include="Game\Gameplay\Minefield.cs" />
     <Compile Include="Game\GameState.cs" />
+    <Compile Include="Game\Light.cs" />
+    <Compile Include="Game\LightingDemo.cs" />
     <Compile Include="Game\Minesweeper.cs" />
     <Compile Include="Game\Gameplay\Square.cs" />
     <Compile Include="Program.cs" />

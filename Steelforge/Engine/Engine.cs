@@ -42,6 +42,7 @@ namespace Steelforge
         private CustomCursor cursor = null;
 
         private Color clearColor = Color.Black;
+        private Vector2f center;
 
         // Render Texture
         Sprite postLayer;
@@ -54,6 +55,7 @@ namespace Steelforge
             this.postLayer = new Sprite();
             this.postLayer.Position = new Vector2f(0, 0);
             this.postLayer.TextureRect = new IntRect(0, (int)window.Size.Y, (int)window.Size.X, -(int)window.Size.Y);
+            this.center = new Vector2f(window.Size.X / 2, window.Size.Y / 2);
             Setup();
 
         }
@@ -227,8 +229,8 @@ namespace Steelforge
         #region Private
         private void DrawDebugTools(Time time)
         {
-                debugUtils.UpdateFPS(time);
-                window.Draw(debugUtils);
+            debugUtils.UpdateFPS(time);
+            window.Draw(debugUtils);
 
         }
 
@@ -260,7 +262,9 @@ namespace Steelforge
         {
             if (mouseMode == MouseMode.FPS)
             {
-                Mouse.SetPosition(window.Position + (Vector2i)(window.Size / 2));
+                inputManager.IgnoreNextMouseInput();
+                Mouse.SetPosition(window.Position + (Vector2i)center);
+                InputManager.MOUSE_POSITION = center;
 
             }
 

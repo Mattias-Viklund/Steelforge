@@ -14,6 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Steelforge.Core.States;
 using Steelforge.Objects;
+using Steelforge.Core.World;
+using Steelforge.Maths;
 
 namespace Steelforge.Game
 {
@@ -25,26 +27,18 @@ namespace Steelforge.Game
         private Vector2u size;
         private Vector2u center;
 
-        private Square[] squares = new Square[3];
-        private Text selectedSquareText = new Text("Selected Square: 0", Engine.engineFont, 14) { Position = new Vector2f(50, 50) };
-        private int selectedSquare = 0;
-        private Vector2f squareVelocity = new Vector2f(200, 0);
 
-        private GameDrawable text1;
+        private float fov = (float)(Math.PI / 2);
+        public Vector3f camPosition = new Vector3f(0, -2, 0); //position of the camera
+        public double direction = (float)(Math.PI / 8); //direction counter-clockwise around the Z-axis
+        public float rotationY = 0;
+        public float speed = 0.005f;
+        public float mouseSpeed = -1f;
+        public Cube cube = new Cube(new Vector3f(6, 0, 0), 2);
 
         public GameState(int drawLimit)
         {
             queue = new DrawBuffer(drawLimit);
-
-            FillSquares();
-
-        }
-
-        private void FillSquares()
-        {
-            squares[0] = new Square(new Vector2f(200, 200), new Vector2f(500, 500), Color.Yellow);
-            squares[1] = new Square(new Vector2f(200, 200), new Vector2f(800, 500), Color.Blue);
-            squares[2] = new Square(new Vector2f(200, 200), new Vector2f(1000, 500), Color.White);
 
         }
 
@@ -53,92 +47,112 @@ namespace Steelforge.Game
             this.size = window.Size;
             this.center = new Vector2u(size.X / 2, size.Y / 2);
 
-            base.RequestExtendedUpdate();
-
         }
 
         public override void Update(Time time)
         {
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_ESCAPE))
-            {
-                base.Close();
-
-            }
-
-            for (int i = 0; i< squares.Length; i++)
-            {
-                squares[i].Update(time);
-
-            }
-        }
-
-        private void SelectSquare(bool next)
-        {
-            if (next)
-            {
-                selectedSquare++;
-                if (selectedSquare == squares.Length)
-                    selectedSquare = 0;
-
-            }
-            else
-            {
-                selectedSquare--;
-                if (selectedSquare < 0)
-                    selectedSquare = squares.Length - 1;
-
-            }
-
-            selectedSquareText.DisplayedString = "Selected Square: " + selectedSquare;
-
-        }
-
-        private void MoveSquare(bool left, Time time)
-        {
-            if (left)
-                squares[selectedSquare].SetVelocity(new Vector2f(-500, -300));
-            else
-                squares[selectedSquare].SetVelocity(new Vector2f(500, 100));
 
         }
 
         public override void FixedUpdate(Time time)
         {
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_UP))
-                SelectSquare(true);
-
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_DOWN))
-                SelectSquare(false);
-
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_LEFT))
-                MoveSquare(true, time);
-
-            if (InputManager.KeyPressed(GlobalConstants.KEYBOARD_RIGHT))
-                MoveSquare(false, time);
-
             queue.Clear();
+            Draw(time);
+            InputManager.MOUSE_VELOCITY = GlobalConstants.VEC2F_ZERO;
 
-            for (int i = 0; i < squares.Length; i++)
-                squares[i].collided = false;
+        }
 
-            Square.Collide(ref squares);
+        private void Line(Vector2f p1, Vector2f p2)
+        {
+            VertexArray v1 = new VertexArray(PrimitiveType.Lines);
+            v1.Append(new Vertex(p1, Color.White));
+            v1.Append(new Vertex(p2, Color.White));
 
-            foreach (Square square in squares)
-                queue.Add(square);
+            queue.Add(new GameRenderable(v1));
 
-            text1 = new GameRenderable(selectedSquareText);
-            queue.Add(text1);
+        }
 
-            foreach (GameObject gObj in GameObject.gameObjects)
+        public void Draw(Time time)
+        {
+            //turning with the mouse
+            direction += (InputManager.MOUSE_VELOCITY.X) * mouseSpeed * 2 * fov / size.X;
+            while (direction >= 2 * Math.PI) direction -= 2 * Math.PI;
+            while (direction < 2 * Math.PI) direction += 2 * Math.PI;
+
+            rotationY -= (InputManager.MOUSE_VELOCITY.Y) * mouseSpeed * 2 * fov / size.Y;
+            if (rotationY > Math.PI / 2) rotationY = (float)Math.PI / 2;
+            if (rotationY < -Math.PI / 2) rotationY = (float)-Math.PI / 2;
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
+                base.Close();
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.W))
+                camPosition = Vectors.Relative(camPosition, (float)(speed * Math.Cos(direction)), (float)(speed * Math.Sin(direction)), 0);
+            if (Keyboard.IsKeyPressed(Keyboard.Key.S))
+                camPosition = Vectors.Relative(camPosition, (float)(-speed * Math.Cos(direction)), (float)(-speed * Math.Sin(direction)), 0);
+            if (Keyboard.IsKeyPressed(Keyboard.Key.A))
+                camPosition = Vectors.Relative(camPosition, (float)(-speed * Math.Sin(direction)), (float)(speed * Math.Cos(direction)), 0);
+            if (Keyboard.IsKeyPressed(Keyboard.Key.D))
+                camPosition = Vectors.Relative(camPosition, (float)(speed * Math.Sin(direction)), (float)(-speed * Math.Cos(direction)), 0);
+
+            if (Keyboard.IsKeyPressed(Keyboard.Key.LShift))
+                camPosition = Vectors.Relative(camPosition, 0, 0, -speed);
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Space))
+                camPosition = Vectors.Relative(camPosition, 0, 0, speed);
+
+            //little crosshair
+            Line(new Vector2f(size.X / 2 - 5, size.Y / 2), new Vector2f(size.X / 2 + 5, size.Y / 2));
+            Line(new Vector2f(size.X / 2, size.Y / 2 - 5), new Vector2f(size.X / 2, size.Y / 2 + 5));
+
+            //loop to draw all of our wires on the screen
+            for (int i = 0; i < cube.Wires.Length; i++)
             {
-                queue.Add(gObj);
- 
+
+                //wires end and start positions transformed to camera coordinates
+                Vector3f camPosStart = ToCamCoords(cube.Wires[i].start);
+                Vector3f camPosEnd = ToCamCoords(cube.Wires[i].end);
+
+                //projection of start and endpoints to camera
+                Vector3f drawStart = PointOnCanvas(camPosStart);
+                Vector3f drawEnd = PointOnCanvas(camPosEnd);
+
+                //drawing lines on screen
+                Line(new Vector2f(drawStart.X, drawStart.Y), new Vector2f(drawEnd.X, drawEnd.Y));
+
             }
         }
 
-        protected override void Update(Time time, Engine engine)
+        public Vector3f PointOnCanvas(Vector3f pos)
         {
 
+            float angleH = (float)Math.Atan2(pos.Y, pos.X);
+            float angleV = (float)Math.Atan2(pos.Z, pos.X);
+
+            angleH /= (float)Math.Abs(Math.Cos(angleH));
+            angleV /= (float)Math.Abs(Math.Cos(angleV));
+
+            return new Vector3f(size.X / 2 - angleH * size.X / fov, size.Y / 2 - angleV * size.X / fov, 0);
+        }
+
+        public Vector3f ToCamCoords(Vector3f pos)
+        {
+            Vector3f rPos = new Vector3f(pos.X - camPosition.X, pos.Y - camPosition.Y, pos.Z - camPosition.Z);
+            //calculating rotation
+            float rx = rPos.X;
+            float ry = rPos.Y;
+            float rz = rPos.Z;
+
+            //rotation Z-axis
+            rPos.X = (float)(rx * Math.Cos(-direction) - ry * Math.Sin(-direction));
+            rPos.Y = (float)(rx * Math.Sin(-direction) + ry * Math.Cos(-direction));
+
+            //rotation Y-axis
+            rx = rPos.X;
+            rz = rPos.Z;
+            rPos.X = (float)(rx * Math.Cos(-rotationY) + rz * Math.Sin(-rotationY));
+            rPos.Z = (float)(rz * Math.Cos(-rotationY) - rx * Math.Sin(-rotationY));
+
+            return rPos;
         }
 
         public override DrawBuffer Render()

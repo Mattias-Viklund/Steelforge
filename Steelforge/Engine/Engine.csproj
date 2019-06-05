@@ -96,7 +96,10 @@
     <Compile Include="Core\Debug.cs" />
     <Compile Include="Core\EventHandler.cs" />
     <Compile Include="Core\GameDrawable.cs" />
+    <Compile Include="Core\World\Cube.cs" />
+    <Compile Include="Core\World\Wire.cs" />
     <Compile Include="Input\CustomCursor.cs" />
+    <Compile Include="Maths\Vectors.cs" />
     <Compile Include="Misc\Command.cs" />
     <Compile Include="Core\States\EmptyState.cs" />
     <Compile Include="Core\GlobalConstants.cs" />
