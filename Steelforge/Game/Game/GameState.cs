@@ -34,7 +34,7 @@ namespace Steelforge.Game
         public float rotationY = 0;
         public float speed = 0.005f;
         public float mouseSpeed = -1f;
-        public Cube cube = new Cube(new Vector3f(6, 0, 0), 2);
+        public List<Cube> cubes = new List<Cube>();
 
         public GameState(int drawLimit)
         {
@@ -46,6 +46,12 @@ namespace Steelforge.Game
         {
             this.size = window.Size;
             this.center = new Vector2u(size.X / 2, size.Y / 2);
+
+            cubes.Add(new Cube(new Vector3f(6, 0, 0), 2));
+            cubes.Add(new Cube(new Vector3f(0, 0, 0), 2));
+            cubes.Add(new Cube(new Vector3f(-6, 0, 0), 2));
+            cubes.Add(new Cube(new Vector3f(0, 6, 0), 2));
+            cubes.Add(new Cube(new Vector3f(0, -6, 0), 2));
 
         }
 
@@ -104,22 +110,34 @@ namespace Steelforge.Game
             Line(new Vector2f(size.X / 2 - 5, size.Y / 2), new Vector2f(size.X / 2 + 5, size.Y / 2));
             Line(new Vector2f(size.X / 2, size.Y / 2 - 5), new Vector2f(size.X / 2, size.Y / 2 + 5));
 
-            //loop to draw all of our wires on the screen
-            for (int i = 0; i < cube.Wires.Length; i++)
+            foreach (Cube cube in cubes)
             {
+                //loop to draw all of our wires on the screen
+                for (int i = 0; i < cube.Wires.Length; i++)
+                {
+                    DrawWire(cube.Wires[i]);
 
-                //wires end and start positions transformed to camera coordinates
-                Vector3f camPosStart = ToCamCoords(cube.Wires[i].start);
-                Vector3f camPosEnd = ToCamCoords(cube.Wires[i].end);
-
-                //projection of start and endpoints to camera
-                Vector3f drawStart = PointOnCanvas(camPosStart);
-                Vector3f drawEnd = PointOnCanvas(camPosEnd);
-
-                //drawing lines on screen
-                Line(new Vector2f(drawStart.X, drawStart.Y), new Vector2f(drawEnd.X, drawEnd.Y));
-
+                }
             }
+
+            DrawWire(new Wire(new Vector3f(6, 0, 0), new Vector3f(-6, 0, 0)));
+            DrawWire(new Wire(new Vector3f(0, 6, 0), new Vector3f(0, -6, 0)));
+
+        }
+
+        public void DrawWire(Wire wire)
+        {
+            //wires end and start positions transformed to camera coordinates
+            Vector3f camPosStart = ToCamCoords(wire.start);
+            Vector3f camPosEnd = ToCamCoords(wire.end);
+
+            //projection of start and endpoints to camera
+            Vector3f drawStart = PointOnCanvas(camPosStart);
+            Vector3f drawEnd = PointOnCanvas(camPosEnd);
+
+            //drawing lines on screen
+            Line(new Vector2f(drawStart.X, drawStart.Y), new Vector2f(drawEnd.X, drawEnd.Y));
+
         }
 
         public Vector3f PointOnCanvas(Vector3f pos)
