@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameEditor", "GameEditor\GameEditor.csproj", "{70911619-3703-4A1F-8AA5-C5D745984C91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAnimator", "SAnimator\SAnimator.csproj", "{8FD21DB3-6073-493B-A71C-5553E18C019A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,18 +58,6 @@ Global
 		{70911619-3703-4A1F-8AA5-C5D745984C91}.Release|x64.Build.0 = Release|Any CPU
 		{70911619-3703-4A1F-8AA5-C5D745984C91}.Release|x86.ActiveCfg = Release|Any CPU
 		{70911619-3703-4A1F-8AA5-C5D745984C91}.Release|x86.Build.0 = Release|Any CPU
-		{8FD21DB3-6073-493B-A71C-5553E18C019A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8FD21DB3-6073-493B-A71C-5553E18C019A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8FD21DB3-6073-493B-A71C-5553E18C019A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8FD21DB3-6073-493B-A71C-5553E18C019A}.Debug|x64.Build.0 = Debug|Any CPU
-		{8FD21DB3-6073-493B-A71C-5553E18C019A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8FD21DB3-6073-493B-A71C-5553E18C019A}.Debug|x86.Build.0 = Debug|Any CPU
-		{8FD21DB3-6073-493B-A71C-5553E18C019A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8FD21DB3-6073-493B-A71C-5553E18C019A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8FD21DB3-6073-493B-A71C-5553E18C019A}.Release|x64.ActiveCfg = Release|Any CPU
-		{8FD21DB3-6073-493B-A71C-5553E18C019A}.Release|x64.Build.0 = Release|Any CPU
-		{8FD21DB3-6073-493B-A71C-5553E18C019A}.Release|x86.ActiveCfg = Release|Any CPU
-		{8FD21DB3-6073-493B-A71C-5553E18C019A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
