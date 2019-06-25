@@ -8,6 +8,7 @@ namespace Steelforge.Rendering
     public class DrawBuffer
     {
         private GameDrawable[] drawables;
+        private Vector2f[] offsets;
 
         private int maxItems;
         private int items = 0;
@@ -17,6 +18,7 @@ namespace Steelforge.Rendering
         public DrawBuffer(int maxItems)
         {
             drawables = new GameDrawable[maxItems];
+            offsets = new Vector2f[maxItems];
             this.maxItems = maxItems;
 
         }
@@ -38,11 +40,22 @@ namespace Steelforge.Rendering
         public void Draw(RenderTexture texture)
         {
             RenderStates state = RenderStates.Default;
+            Vector2f offset = new Vector2f();
 
             for (int i = 0; i < items; i++)
             {
+                offset = offsets[i];
 
-                texture.Draw(drawables[i]);
+                if (offset.X != 0 || offset.Y != 0)
+                {
+                    state.Transform.Translate(offset);
+                    texture.Draw(drawables[i], state);
+
+                    state.Transform.Translate(-offset);
+
+                }
+                else
+                    texture.Draw(drawables[i]);
 
             }
         }
@@ -54,6 +67,20 @@ namespace Steelforge.Rendering
                 return -1;
 
             drawables[items] = d;
+            items++;
+
+            return items;
+
+        }
+
+        // Returns the success of the operation.
+        public int Add(GameDrawable d, Vector2f offset)
+        {
+            if (items == maxItems)
+                return -1;
+
+            drawables[items] = d;
+            offsets[items] = offset;
             items++;
 
             return items;
