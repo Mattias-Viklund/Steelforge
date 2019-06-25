@@ -60,6 +60,13 @@ namespace Steelforge
 
         }
 
+        private void Init()
+        {
+            // Initialize the current state at least once
+            currentState.Init(window);
+
+        }
+
         public void Start()
         {
             Time timePerUpdate = Time.FromSeconds(1.0f / (float)TPS);
@@ -120,15 +127,57 @@ namespace Steelforge
                 staticDrawBuffer.Draw(texture);
 
                 this.postLayer.Texture = texture.Texture;
-
                 window.Draw(postLayer);
-
                 LateUpdate(deltaTime);
 
                 // Display the screen
                 window.Display();
 
             }
+        }
+
+        public void Update()
+        {
+            if (currentState.GetID() != newState.GetID())
+                SwapState();
+
+            Time deltaTime = Time.Zero;
+
+            CheckCommand();
+
+            // Dispatch window events
+            window.DispatchEvents();
+
+            if (currentState.WantsExtendedUpdate())
+                currentState.ExtendedUpdate(deltaTime, this);
+
+            // TODO: Add comment that makes sense
+            Update(deltaTime);
+            FixedUpdate(deltaTime);
+            CheckEvents(deltaTime);
+
+            window.Clear(clearColor);
+            texture.Clear();
+
+            staticDrawBuffer = currentState.Render();
+
+            // Draw our framebuffer
+            staticDrawBuffer.Draw(texture);
+
+            this.postLayer.Texture = texture.Texture;
+            window.Draw(postLayer);
+            LateUpdate(deltaTime);
+
+            // Display the screen
+            window.Display();
+
+        }
+
+        public Image DumpTexture()
+        {
+            Image i = postLayer.Texture.CopyToImage();
+            return i;
+
         }
 
         private void CheckEvents(Time time)
