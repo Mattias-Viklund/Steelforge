@@ -350,5 +350,58 @@ namespace Steelforge
         }
         #endregion
 
+        #region FormEngine
+        public void FormUpdate()
+        {
+            Time deltaTime = Time.Zero;
+
+            if (currentState.GetID() != newState.GetID())
+                SwapState();
+
+            CheckCommand();
+
+            // Dispatch window events
+            window.DispatchEvents();
+
+            if (currentState.WantsExtendedUpdate())
+                currentState.ExtendedUpdate(deltaTime, this);
+
+            Update(deltaTime);
+            FixedUpdate(deltaTime);
+            CheckEvents(deltaTime);
+
+            staticDrawBuffer = currentState.Render();
+
+            // Draw our framebuffer
+            staticDrawBuffer.Draw(texture);
+
+            this.postLayer.Texture = texture.Texture;
+
+            window.Draw(postLayer);
+
+            LateUpdate(deltaTime);
+
+        }
+
+        public void FormClear()
+        {
+            window.Clear(clearColor);
+            texture.Clear();
+
+        }
+
+        public void FormDisplay()
+        {
+            // Display the screen
+            window.Display();
+
+        }
+
+        public void FormInit()
+        {
+            currentState.Init(window);
+
+        }
+        #endregion
     }
 }

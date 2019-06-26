@@ -184,6 +184,9 @@ namespace Steelforge.Input
 
         public static bool MouseButtonPressed(int button)
         {
+            if (PRESSED_MOUSEBUTTONS != 0)
+                Debug.Write("wat");
+
             if ((PRESSED_MOUSEBUTTONS & button) == button)
                 return true;
 
