@@ -28,7 +28,7 @@ namespace SAnimator.Animation
         {
             if (InputManager.MouseButtonPressed(GlobalConstants.MOUSE_1))
             {
-                CreateRects(50);
+                CreateRects(10);
 
             }
         }

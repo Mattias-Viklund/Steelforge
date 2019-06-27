@@ -15,7 +15,7 @@ namespace SAnimator.Animation
     {
         public AnimationState state;
         private Engine engine;
-
+         
         public Animator(Size controlSize)
         {
             controlSize.Width -= 100;

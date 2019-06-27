@@ -20,7 +20,6 @@ namespace SAnimator
         {
             InitializeComponent();
             CreateCustomComponents();
-            RunCustomCode();
 
         }
 
@@ -37,13 +36,13 @@ namespace SAnimator
             {
                 Application.DoEvents();
                 animator.Draw();
+                ResumeLayout();
 
             }
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            animator.state.CreateRects(1000);
             RunCustomCode();
 
         }
